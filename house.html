@@ -28,6 +28,31 @@
             margin: auto;
         }
         
+        /* --- 按鈕區塊樣式調整 (適應放在上方) --- */
+        .btn-group {
+            text-align: center;
+            margin-bottom: 20px; /* 改為下方間距 */
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        button {
+            background: var(--yung-green);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button:hover { background: #00703b; }
+        .btn-red { background: var(--yung-red); }
+        .btn-red:hover { background: #b02020; }
+
         #full-report-area {
             background: var(--report-bg);
             padding: 40px; 
@@ -71,6 +96,17 @@
             border-radius: 4px;
             border: 1px solid #eee;
             margin-bottom: 20px; 
+        }
+
+        /* 參數摘要：平時隱藏，列印或複製時很有用 */
+        .print-summary {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 4px solid var(--yung-green);
         }
 
         .control-panel h2 {
@@ -169,36 +205,6 @@
             border-top: 1px dashed #ccc;
         }
 
-        .btn-group {
-            text-align: center;
-            margin-top: 20px;
-            padding-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        button {
-            background: var(--yung-green);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #00703b;
-        }
-        .btn-red {
-            background: var(--yung-red);
-        }
-        .btn-red:hover {
-            background: #b02020;
-        }
-
         @media (max-width: 768px) {
             body { padding: 10px; }
             #full-report-area {
@@ -230,6 +236,12 @@
 <body>
 
 <div class="app-container">
+    
+    <div class="btn-group">
+        <button onclick="generateTable()">重新產生試算表</button>
+        <button class="btn-red" onclick="saveAsImage()">一鍵儲存完整報告圖片</button>
+    </div>
+
     <div id="full-report-area">
         <div class="report-branding">
             <div class="brand-logo-container">
@@ -241,6 +253,17 @@
         <div class="control-panel report-section">
             <h2>一、成屋專屬參數設定</h2>
             
+            <div id="textSummary" class="print-summary" style="display:none;">
+                <strong>當前設定：</strong> 買入總價 <span id="s_cost">1000</span> 萬 | 
+                買方仲介費 <span id="s_buyAgency">20</span> 萬 | 
+                買方規費 <span id="s_buyOther">10</span> 萬 | 
+                裝潢 <span id="s_reno">50</span> 萬 | 
+                土增稅 <span id="s_land">0</span> 萬 | 
+                稅率 <span id="s_tax">35</span>% | 
+                賣方仲介費 <span id="s_sellAgency">4</span>% | 
+                賣方規費 <span id="s_sellOther">0</span> 萬
+            </div>
+
             <div class="input-grid">
                 <div class="input-group">
                     <label>買入總價 (萬元)</label>
@@ -340,74 +363,96 @@
             </div>
         </div>
     </div>
-
-    <div class="btn-group">
-        <button onclick="generateTable()">重新產生試算表</button>
-        <button class="btn-red" onclick="saveAsImage()">一鍵儲存完整報告圖片</button>
-    </div>
 </div>
 
 <script>
     function generateTable() {
-        // 取得參數
-        const costPrice = parseFloat(document.getElementById('costPrice').value) || 0;
-        
-        // 取得拆分後的三項成本
-        const buyAgencyFee = parseFloat(document.getElementById('buyAgencyFee').value) || 0;
-        const buyOtherFees = parseFloat(document.getElementById('buyOtherFees').value) || 0;
-        const renovationCost = parseFloat(document.getElementById('renovationCost').value) || 0;
+        // 取得所有 Input 元素
+        const inputs = {
+            costPrice: document.getElementById('costPrice'),
+            buyAgencyFee: document.getElementById('buyAgencyFee'),
+            buyOtherFees: document.getElementById('buyOtherFees'),
+            renovationCost: document.getElementById('renovationCost'),
+            landIncrement: document.getElementById('landIncrement'),
+            taxRate: document.getElementById('taxRate'),
+            agencyRate: document.getElementById('agencyRate'),
+            otherSellingFees: document.getElementById('otherSellingFees'),
+            basePrice: document.getElementById('basePrice'),
+            stepValue: document.getElementById('stepValue'),
+            rowCount: document.getElementById('rowCount')
+        };
+
+        // --- 核心修正：同步 HTML Attribute，確保列印/複製時抓到最新值 ---
+        Object.values(inputs).forEach(el => {
+            if(el.tagName === 'INPUT') {
+                el.setAttribute('value', el.value);
+            } else if (el.tagName === 'SELECT') {
+                const opts = el.options;
+                for(let i=0; i<opts.length; i++){
+                    if(opts[i].value == el.value) opts[i].setAttribute('selected', 'selected');
+                    else opts[i].removeAttribute('selected');
+                }
+            }
+        });
+
+        // 更新摘要文字
+        document.getElementById('s_cost').innerText = inputs.costPrice.value;
+        document.getElementById('s_buyAgency').innerText = inputs.buyAgencyFee.value;
+        document.getElementById('s_buyOther').innerText = inputs.buyOtherFees.value;
+        document.getElementById('s_reno').innerText = inputs.renovationCost.value;
+        document.getElementById('s_land').innerText = inputs.landIncrement.value;
+        document.getElementById('s_tax').innerText = inputs.taxRate.value;
+        document.getElementById('s_sellAgency').innerText = inputs.agencyRate.value;
+        document.getElementById('s_sellOther').innerText = inputs.otherSellingFees.value;
+        document.getElementById('textSummary').style.display = 'block';
+
+        // 取值並計算
+        const costPrice = parseFloat(inputs.costPrice.value) || 0;
+        const buyAgencyFee = parseFloat(inputs.buyAgencyFee.value) || 0;
+        const buyOtherFees = parseFloat(inputs.buyOtherFees.value) || 0;
+        const renovationCost = parseFloat(inputs.renovationCost.value) || 0;
         const totalAcquisitionCosts = buyAgencyFee + buyOtherFees + renovationCost;
-
-        const landIncrement = parseFloat(document.getElementById('landIncrement').value) || 0;
+        const landIncrement = parseFloat(inputs.landIncrement.value) || 0;
         
-        const taxRateSelect = document.getElementById('taxRate').value;
+        const taxRateSelect = inputs.taxRate.value;
         const taxRate = parseFloat(taxRateSelect) / 100 || 0;
-        const isSelfUse = (taxRateSelect === '10'); // 判斷是否為自住優惠
+        const isSelfUse = (taxRateSelect === '10'); 
 
-        const agencyRate = parseFloat(document.getElementById('agencyRate').value) / 100 || 0;
-        const otherSellingFees = parseFloat(document.getElementById('otherSellingFees').value) || 0;
+        const agencyRate = parseFloat(inputs.agencyRate.value) / 100 || 0;
+        const otherSellingFees = parseFloat(inputs.otherSellingFees.value) || 0;
         
-        const basePrice = parseFloat(document.getElementById('basePrice').value) || 0;
-        const stepValue = parseFloat(document.getElementById('stepValue').value) || 0;
+        const basePrice = parseFloat(inputs.basePrice.value) || 0;
+        const stepValue = parseFloat(inputs.stepValue.value) || 0;
         
-        let rowCount = parseInt(document.getElementById('rowCount').value);
+        let rowCount = parseInt(inputs.rowCount.value);
         if (isNaN(rowCount) || rowCount < 1) rowCount = 10;
 
-        // 設定日期
         const today = new Date();
         document.getElementById('dateDisplay').innerText = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
 
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
 
-        // 總成本 = 買入總價 + 取得與裝潢成本加總
         const totalCost = costPrice + totalAcquisitionCosts;
 
         for(let i = rowCount; i >= -rowCount; i--) {
             let currentPrice = basePrice + (i * stepValue);
             
-            // 賣出費用計算 (實際 vs 法定)
-            let actualSellingExpense = (currentPrice * agencyRate) + otherSellingFees; // 實際要付的錢
-            let statutoryExpense = Math.min(currentPrice * 0.03, 30); // 法定 3% 上限 30 萬
-            let deductibleExpense = Math.max(actualSellingExpense, statutoryExpense); // 擇優抵扣稅基
+            let actualSellingExpense = (currentPrice * agencyRate) + otherSellingFees; 
+            let statutoryExpense = Math.min(currentPrice * 0.03, 30); 
+            let deductibleExpense = Math.max(actualSellingExpense, statutoryExpense); 
 
-            // 課稅所得 = 成交價 - 總成本 - 可抵扣費用 - 土地漲價總數額
             let taxBase = currentPrice - totalCost - deductibleExpense - landIncrement;
             
-            // 扣除自住 400 萬免稅額
             if (isSelfUse) {
                 taxBase = Math.max(0, taxBase - 400);
             } else {
                 taxBase = Math.max(0, taxBase);
             }
 
-            // 房地合一稅
             let taxAmount = taxBase * taxRate;
-
-            // 真實淨獲利 = 成交價 - 買入總價 - 取得與裝潢成本 - 實際賣出費用 - 房地合一稅金
             let netProfit = currentPrice - costPrice - totalAcquisitionCosts - actualSellingExpense - taxAmount;
 
-            // 產生表格列
             let tr = document.createElement('tr');
             if (i === 0) tr.className = 'highlight-row';
 
