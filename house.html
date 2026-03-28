@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1050">
+    <meta name="viewport" content="width=1050, user-scalable=no">
     <title>成屋獲利對照報告 - 永義房屋斗六成功莊敬加盟店</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -27,9 +27,9 @@
 
         .app-container { width: 960px; margin: 30px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
         
-        /* 按鈕區 */
+        /* 按鈕區 - 固定高度與比例 */
         .btn-group { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 30px; background: #fcfcfc; padding: 20px; border-radius: 10px; border: 1px solid #eee; }
-        .btn-group button { border: none; height: 70px; border-radius: 6px; cursor: pointer; font-size: 24px; font-weight: bold; flex: 1; color: var(--flat-text); transition: 0.2s; }
+        .btn-group button { border: none; height: 70px; border-radius: 6px; cursor: pointer; font-size: 24px; font-weight: bold; flex: 1; color: var(--flat-text); }
         .btn-calc { background-color: var(--flat-green); }
         .btn-save { background-color: var(--flat-blue); }
         .btn-pc { background-color: var(--flat-dark); }
@@ -43,45 +43,30 @@
         .control-panel { background: #fdfdfd; padding: 30px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 30px; }
         .control-panel h2 { text-align: center; font-size: 32px; border-bottom: 2px dashed #ccc; padding-bottom: 20px; margin-top: 0; margin-bottom: 30px; font-weight: 900; }
         
-        /* 網格系統 */
-        .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 25px; }
+        /* 網格系統 - 固定兩列比例 */
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         .input-group { display: flex; flex-direction: column; }
         .input-group label { font-weight: 900; margin-bottom: 10px; font-size: 22px; color: #444; }
         
         input, select { 
             padding: 14px 18px; border: 2px solid var(--border-color); border-radius: 8px; 
-            font-size: 28px; font-weight: bold; color: #1e3a8a; outline: none; 
+            font-size: 28px; font-weight: bold; color: #1e3a8a; outline: none;
+            -webkit-text-size-adjust: 100%; /* 防止字體自動縮放 */
         }
 
-        /* 🔥 獨立出來的仲介費專區 - 修正比例跑掉問題 🔥 */
+        /* 🔥 仲介費專區 - 鎖定比例不變動 🔥 */
         .special-agency-box {
-            background: #f0f7f4;
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid var(--yung-green);
-            margin: 20px 0;
+            background: #f0f7f4; padding: 25px; border-radius: 12px;
+            border: 2px solid var(--yung-green); margin: 20px 0;
         }
-        .special-agency-box label {
-            display: block; font-size: 26px; font-weight: 900; color: var(--yung-green); margin-bottom: 15px;
-        }
-        .agency-flex-container {
-            display: flex; gap: 15px; align-items: center;
-        }
-        .agency-mode-select {
-            flex: 1.2; /* 讓選單稍微寬一點點 */
-            height: 75px; background: var(--yung-green); color: white; border: none; font-size: 26px;
-        }
-        .agency-input-wrapper {
-            flex: 1; position: relative; display: flex; align-items: center;
-        }
-        .agency-input-wrapper input {
-            width: 100%; height: 75px; font-size: 36px; padding-right: 60px;
-        }
-        .unit-float {
-            position: absolute; right: 20px; font-size: 32px; font-weight: 900; color: var(--yung-green);
-        }
+        .special-agency-box label { display: block; font-size: 26px; font-weight: 900; color: var(--yung-green); margin-bottom: 15px; }
+        .agency-flex-container { display: flex; gap: 15px; align-items: center; }
+        .agency-mode-select { flex: 0 0 450px; height: 75px; background: var(--yung-green); color: white; border: none; font-size: 26px; }
+        .agency-input-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
+        .agency-input-wrapper input { width: 100%; height: 75px; font-size: 36px; padding-right: 60px; }
+        .unit-float { position: absolute; right: 20px; font-size: 32px; font-weight: 900; color: var(--yung-green); }
 
-        /* 報表區 */
+        /* 報表表格 */
         .report-area { border-top: 8px solid #fdb913; padding-top: 20px; }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         th, td { padding: 18px 5px; text-align: center; border-bottom: 1px solid #e2e8f0; }
@@ -94,7 +79,7 @@
         #exportSummary { display: none; background: #f9f9f9; padding: 20px; border-radius: 6px; border-left: 6px solid var(--yung-green); margin-bottom: 20px; font-size: 22px; line-height: 1.6; }
         .footer-info { margin-top: 40px; padding-top: 20px; border-top: 1px dashed #ccc; display: flex; justify-content: space-between; font-size: 16px; color: #777; }
 
-        /* 導出模式樣式 */
+        /* 匯出模式樣式 */
         .exporting .control-panel, .exporting .btn-group { display: none; }
         .exporting #exportSummary { display: block; }
 
@@ -214,13 +199,6 @@
         generateTable();
     }
 
-    function showSuccessToast(message) {
-        const toast = document.getElementById("toastMessage");
-        toast.innerText = message;
-        toast.className = "show";
-        setTimeout(() => { toast.className = ""; }, 3000);
-    }
-
     function generateTable() {
         const cost = parseFloat(document.getElementById('costPrice').value) || 0;
         const reno = parseFloat(document.getElementById('renovationCost').value) || 0;
@@ -274,6 +252,14 @@
             `;
             tbody.appendChild(tr);
         }
+    }
+
+    // 其它功能保持原樣
+    function showSuccessToast(message) {
+        const toast = document.getElementById("toastMessage");
+        toast.innerText = message;
+        toast.className = "show";
+        setTimeout(() => { toast.className = ""; }, 3000);
     }
 
     async function directDownloadPC() {
