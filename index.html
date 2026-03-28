@@ -51,10 +51,9 @@
         .input-group label { display: block; font-weight: 900; margin-bottom: 8px; font-size: 14px; color: var(--yung-green); }
         .input-row { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #eee; }
         input, select { 
-            width: 100%; padding: 12px 0; border: none; font-size: 20px; 
+            width: 100%; padding: 12px 0; border: none; font-size: 19px; 
             background: transparent; color: var(--text-dark); font-weight: 800; outline: none;
         }
-        /* 💡 簡約選單尺寸 */
         select { min-width: 50px; cursor: pointer; }
 
         #output-container {
@@ -72,8 +71,8 @@
             background: rgba(253, 185, 19, 0.03); border-radius: 20px; border: 2.5px solid var(--yung-gold);
             padding: 35px; margin-bottom: 45px;
         }
-        .summary-line { font-size: 20px; color: #333; font-weight: 700; line-height: 2.2; }
-        .summary-line b { color: #000; font-size: 23px; font-weight: 1000; margin: 0 2px; }
+        .summary-line { font-size: 19px; color: #333; font-weight: 700; line-height: 2.2; }
+        .summary-line b { color: #000; font-size: 21px; font-weight: 1000; margin: 0 2px; }
 
         .hint-bar {
             background: #fffdf2; border-radius: 100px; padding: 16px 35px; margin-bottom: 50px;
@@ -85,12 +84,12 @@
         th { font-size: 17px; color: #000; font-weight: 950; padding: 20px 0; text-align: center; border-bottom: 4px solid var(--yung-gold); }
         .th-note { font-size: 11px; color: #666; font-weight: 700; display: block; margin-top: 4px; }
         
-        td { padding: 40px 0; text-align: center; vertical-align: middle; border-bottom: 1px solid #f0f0f0; }
+        td { padding: 35px 0; text-align: center; vertical-align: middle; border-bottom: 1px solid #f0f0f0; }
         
         .col-price { font-size: 34px; color: var(--navy-blue); font-weight: 1000; letter-spacing: -1px; }
         .col-main-data { font-size: 26px; color: #000; font-weight: 900; }
         .col-net { font-size: 48px; color: var(--yung-red); font-weight: 1000; letter-spacing: -2px; }
-        .data-note { font-size: 13px; color: #555; font-weight: 800; display: block; margin-top: 8px; white-space: nowrap; }
+        .data-note { font-size: 11px; color: #555; font-weight: 800; display: block; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 
         .footer { margin-top: 75px; padding-top: 45px; border-top: 4px solid #000; display: flex; justify-content: space-between; align-items: flex-end; }
         .footer-left strong { font-size: 28px; color: #000; display: block; margin-bottom: 10px; font-weight: 1000; }
@@ -182,8 +181,8 @@
                 <tr>
                     <th style="width:20%">成交預估價<br><span class="th-note">(預估成交金額)</span></th>
                     <th style="width:16%">服務費用<br><span class="th-note">(支出成本)</span></th>
-                    <th style="width:23%">課稅所得額<br><span class="th-note">(成交-成本-抵扣)</span></th>
-                    <th style="width:21%">房地稅額<br><span class="th-note">(所得 × 稅率)</span></th>
+                    <th style="width:24%">課稅所得額<br><span class="th-note">(成交-成本-抵扣)</span></th>
+                    <th style="width:20%">房地稅額<br><span class="th-note">(所得 × 稅率)</span></th>
                     <th style="width:20%; color: var(--yung-red);">最終淨獲利<br><span class="th-note" style="color: var(--yung-red);">(實拿結案)</span></th>
                 </tr>
             </thead>
@@ -215,14 +214,17 @@
         const agencyVal = parseFloat(document.getElementById('agencyVal').value) || 0;
         const taxRateSelect = document.getElementById('taxRate');
         const taxVal = parseFloat(taxRateSelect.value);
-        const taxText = taxRateSelect.options[taxRateSelect.selectedIndex].text;
+        const taxTextFull = taxRateSelect.options[taxRateSelect.selectedIndex].text;
         const rows = parseInt(document.getElementById('rowCount').value) || 8;
+
+        // 💡 針對 6 年稅率進行文字精簡，防止表格跑位
+        let taxDisplay = taxTextFull.includes("設籍") ? "自住滿 6 年 (10%)" : taxTextFull.split(' ')[0];
 
         document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString();
         
         document.getElementById('sumLine1').innerHTML = `取得：買入房價 <b>${cost}</b> | 裝潢(需發票) <b>${reno}</b> | 服務費 <b>${buyAg}</b> | 規費 <b>${buyFe}</b>`;
         const feeDisplay = (feeType === 'percent') ? `${agencyVal}%` : `${agencyVal}萬`;
-        document.getElementById('sumLine2').innerHTML = `稅務：稅率 <b>${taxText.split(' ')[0]}</b> | 賣出服務費 <b>${feeDisplay}</b> | 賣出規費 <b>0</b>`;
+        document.getElementById('sumLine2').innerHTML = `稅務：房地合一稅 <b>${taxTextFull.split(' ')[0]}</b> | 賣出服務費 <b>${feeDisplay}</b> | 賣出規費 <b>0</b>`;
 
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
@@ -234,6 +236,8 @@
             let deduc = Math.max(sellAgency, Math.min(price * 0.03, 30));
             let totalAcq = cost + reno + buyAg + buyFe;
             let rawProfit = price - totalAcq - deduc;
+            
+            // 計算稅額 (400萬免稅額邏輯)
             let tax = (taxVal === 10) ? Math.max(0, rawProfit - 400) * 0.1 : Math.max(0, rawProfit) * (taxVal / 100);
             let net = price - totalAcq - sellAgency - tax;
 
@@ -247,7 +251,7 @@
                 </td>
                 <td>
                     <span class="col-main-data">${tax.toFixed(1)}</span>
-                    <span class="data-note">(${taxText.split('%')[0]}% 稅率)</span>
+                    <span class="data-note">(${taxDisplay})</span>
                 </td>
                 <td class="col-net">${net.toFixed(1)}</td>
             `;
@@ -277,7 +281,7 @@
     async function handleMobileShare() {
         const canvas = await captureAndProcess();
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], '永義房屋稅金報告.png', { type: 'image/png' });
+            const file = new File([blob], '永義房屋專業資產報告.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({ files: [file], title: '獲利試算報告' });
             }
@@ -286,7 +290,7 @@
 
     async function handlePCDownload() {
         const canvas = await captureAndProcess();
-        const a = document.createElement('a'); a.href = canvas.toDataURL(); a.download = '永義房屋稅金報告.png'; a.click();
+        const a = document.createElement('a'); a.href = canvas.toDataURL(); a.download = '永義房屋藝術報告.png'; a.click();
     }
     window.onload = generateTable;
 </script>
