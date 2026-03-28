@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>永義房屋 - 成功莊敬店 (級距優化版)</title>
+    
+    <title>成屋稅金試算｜永義房屋成功莊敬店</title>
+    <meta property="og:title" content="成屋稅金試算｜永義房屋成功莊敬店">
+    <meta property="og:description" content="專業成屋獲利與房地合一稅金精算工具">
+    <meta name="description" content="成屋稅金試算｜永義房屋成功莊敬店">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -24,6 +29,7 @@
             min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
+        /* 💡 旗艦級背景：琥珀暖光漸層 */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
@@ -36,7 +42,7 @@
         .ui-controls { width: 800px; z-index: 100; margin-bottom: 25px; }
         .btn-group { display: flex; gap: 12px; margin-bottom: 25px; }
         .btn-group button { 
-            border: none; padding: 14px 0; border-radius: 16px; cursor: pointer; 
+            border: none; padding: 16px 0; border-radius: 16px; cursor: pointer; 
             font-size: 16px; font-weight: 900; flex: 1; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
@@ -44,13 +50,14 @@
         .btn-share { background: white; color: var(--apple-blue); border: 1.5px solid var(--apple-blue) !important; }
         .btn-pc { background: #1d1d1f; color: white; }
 
+        /* 🍎 控制面板：Apple 磨砂玻璃感 */
         .control-panel { 
             background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             padding: 35px; border-radius: 28px; border: 1px solid rgba(0,0,0,0.05);
             display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; margin-bottom: 30px;
         }
 
-        /* 🍎 三欄連動設定區 */
+        /* 💡 三欄聯動佈局 (基準價/級距/延展) */
         .price-settings {
             grid-column: span 2;
             display: grid;
@@ -67,8 +74,11 @@
             font-size: 16px; box-sizing: border-box; background: white; font-weight: 700;
         }
 
+        /* 🍎 A4 藝術容器：物理水晶質感 (存圖用) */
         #output-container {
-            width: 800px; background: #ffffff; padding: 55px 60px; box-sizing: border-box;
+            width: 800px; 
+            background: #ffffff;
+            padding: 55px 60px; box-sizing: border-box;
             display: flex; flex-direction: column; position: relative;
             box-shadow: 0 40px 100px rgba(0,0,0,0.06); margin-bottom: 50px;
         }
@@ -77,6 +87,7 @@
         .brand-logo-img { height: 75px; }
         .report-title { color: var(--yung-green); font-size: 32px; font-weight: 900; margin: 0; }
 
+        /* 🍎 摘要面板：文字修正 */
         .summary-panel {
             background: rgba(255, 255, 255, 0.5); border: 1.5px solid var(--yung-gold);
             padding: 25px 30px; margin-bottom: 25px; border-radius: 20px;
@@ -97,6 +108,7 @@
         
         td { padding: 22px 0; text-align: center; vertical-align: middle; border-bottom: 1px solid rgba(0,0,0,0.04); background: transparent !important; }
         
+        /* 核心數據字體與顏色 */
         .col-price { font-size: 30px; color: var(--navy-blue); font-weight: 900; }
         .col-main-data { font-size: 24px; color: #000; font-weight: 800; }
         .col-net { font-size: 38px; color: var(--yung-red); font-weight: 950; }
@@ -104,6 +116,7 @@
 
         .footer { margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--yung-gold); display: flex; justify-content: space-between; align-items: flex-end; }
         .footer-left strong { font-size: 22px; color: #000; display: block; margin-bottom: 5px; font-weight: 900; }
+        .footer-left span { font-size: 16px; color: var(--text-gray); font-weight: 700; }
         .footer-right { text-align: right; color: var(--text-gray); font-size: 13px; line-height: 1.8; }
 
         .watermark { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 80%; opacity: 0.08; pointer-events: none; z-index: 0; }
@@ -118,7 +131,7 @@
 
 <div class="ui-controls">
     <div class="btn-group">
-        <button class="btn-calc" onclick="generateTable()">重新計算</button>
+        <button class="btn-calc" onclick="generateTable()">重新計算數據</button>
         <button class="btn-share" onclick="handleMobileShare()">手機儲存相片</button>
         <button class="btn-pc" onclick="handlePCDownload()">電腦儲存相片</button>
     </div>
@@ -136,7 +149,7 @@
             </div>
         </div>
         <div class="input-group">
-            <label>稅率</label>
+            <label>稅率設定</label>
             <select id="taxRate" onchange="generateTable()">
                 <option value="45">45%</option>
                 <option value="35">35%</option>
@@ -146,10 +159,7 @@
         </div>
 
         <div class="price-settings">
-            <div class="input-group">
-                <label>基準成交價 (萬)</label>
-                <input type="number" id="basePrice" value="1500" oninput="generateTable()">
-            </div>
+            <div class="input-group"><label>基準成交價 (萬)</label><input type="number" id="basePrice" value="1500" oninput="generateTable()"></div>
             <div class="input-group">
                 <label>級距單位</label>
                 <select id="stepValue" onchange="generateTable()">
@@ -158,10 +168,7 @@
                     <option value="10" selected>10萬</option>
                 </select>
             </div>
-            <div class="input-group">
-                <label>延展筆數</label>
-                <input type="number" id="rowCount" value="8" oninput="generateTable()">
-            </div>
+            <div class="input-group"><label>延展筆數</label><input type="number" id="rowCount" value="8" oninput="generateTable()"></div>
         </div>
     </div>
 </div>
@@ -222,7 +229,7 @@
         const taxRateSelect = document.getElementById('taxRate');
         const taxVal = parseFloat(taxRateSelect.value);
         const taxText = taxRateSelect.options[taxRateSelect.selectedIndex].text;
-        const rows = parseInt(document.getElementById('rowCount').value) || 6;
+        const rows = parseInt(document.getElementById('rowCount').value) || 8;
 
         document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString();
         document.getElementById('sumLine1').innerHTML = `取得：買入房價 <b>${cost}</b> | 裝潢(需發票) <b>${reno}</b> | 買入服務費 <b>${buyAg}</b> | 買入規費 <b>${buyFe}</b>`;
@@ -248,7 +255,7 @@
                 <td class="col-main-data">${sellAgency.toFixed(1)}</td>
                 <td>
                     <span class="col-main-data">${rawProfit.toFixed(1)}</span>
-                    <span class="data-note">(抵扣 ${deduc.toFixed(1)} [${deduc === sellAgency ? '採仲介費' : '採免稅額'}])</span>
+                    <span class="data-note">(抵扣 ${deduc.toFixed(1)} [${deduc === sellAgency ? '採服務費' : '採免稅額'}])</span>
                 </td>
                 <td>
                     <span class="col-main-data">${tax.toFixed(1)}</span>
@@ -267,6 +274,7 @@
             onclone: (clonedDoc) => {
                 const el = clonedDoc.getElementById('output-container');
                 el.style.transform = 'none'; el.style.margin = '0';
+                // 💡 存圖時強迫注入：琥珀水晶奶油漸層底圖
                 el.style.background = "linear-gradient(160deg, #ffffff 0%, #f9f9fb 100%)";
             }
         });
