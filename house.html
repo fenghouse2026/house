@@ -78,8 +78,10 @@
         
         /* 💡 電腦版與返回按鈕樣式 💡 */
         .header-btns { display: flex; gap: 15px; }
-        .btn-download-pc { background: var(--yung-green); color: white; width: auto; padding: 12px 25px; font-size: 18px; border-radius: 8px; }
-        .btn-back-img { background: white; color: #1e3a8a; width: auto; padding: 12px 25px; font-size: 18px; border-radius: 8px; }
+        .btn-download-pc { background: var(--yung-green); color: white; width: auto; padding: 12px 25px; font-size: 18px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; }
+        .btn-download-pc:hover { background: #00703A; }
+        .btn-back-img { background: white; color: #1e3a8a; width: auto; padding: 12px 25px; font-size: 18px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; }
+        .btn-back-img:hover { background: #f1f5f9; }
         
         /* 圖片容器：加上虛線框，像實體報表 */
         .image-wrapper {
@@ -193,9 +195,9 @@
 
 <div id="imageOverlay">
     <div class="overlay-header">
-        <span>✅ 圖片已生成 (手機請直接長按圖片)</span>
+        <span>✅ 圖片已生成 (手機請直接長按下方圖片)</span>
         <div class="header-btns">
-            <button class="btn-download-pc" onclick="downloadImage()">💾 電腦版直接下載</button>
+            <button class="btn-download-pc" onclick="downloadImage()">💾 電腦一鍵下載</button>
             <button class="btn-back-img" onclick="closeImageMode()">⬅️ 返回</button>
         </div>
     </div>
@@ -275,14 +277,21 @@
         }, 300);
     }
 
-    // 💡 電腦版一鍵下載功能 💡
+    // 💡 電腦版一鍵下載功能 (強制觸發版) 💡
     function downloadImage() {
         const img = document.getElementById('generatedImg');
         if (!img.src) return;
+        
         let link = document.createElement('a');
         link.download = `成屋獲利報告_${new Date().getTime()}.png`;
         link.href = img.src;
+        
+        // 必須將 link 加入 DOM，電腦瀏覽器才會允許點擊下載
+        document.body.appendChild(link);
         link.click();
+        
+        // 下載完畢後移除連結
+        document.body.removeChild(link);
     }
 
     // 返回修改模式
