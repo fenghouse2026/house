@@ -20,7 +20,7 @@
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             background-color: #f4f7f6;
             color: var(--text-main);
-            padding: 20px 10px; /* 手機版邊距縮小 */
+            padding: 20px 10px;
             margin: 0;
             overscroll-behavior: none; 
         }
@@ -33,7 +33,6 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            flex-direction: row; /* 預設橫向 */
         }
 
         button {
@@ -48,16 +47,15 @@
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(0, 140, 74, 0.15);
-            flex: 1; /* 手機版平均分配 */
+            flex: 1;
         }
 
         button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 140, 74, 0.25); }
         .btn-red { background: var(--yung-red); box-shadow: 0 4px 10px rgba(216, 42, 41, 0.15); }
 
-        /* 報表主要卡片 */
         #full-report-area {
             background: #ffffff;
-            padding: 40px 30px; /* 基礎留白縮小 */
+            padding: 40px 30px; 
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.08);
             border-top: 10px solid var(--yung-yellow); 
@@ -67,7 +65,7 @@
             box-sizing: border-box;
         }
 
-        /* LOGO 浮水印 */
+        /* 浮水印 */
         .watermark-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -86,7 +84,6 @@
             opacity: 0.04; 
         }
 
-        /* 品牌標題 */
         .report-branding {
             display: flex;
             align-items: center;
@@ -101,32 +98,26 @@
             color: var(--yung-green);
             font-size: 22px;
             font-weight: 800;
-            letter-spacing: 0px;
         }
 
-        /* --- 修正後的輸入面板 --- */
+        /* 輸入區塊 */
         .control-panel { margin-bottom: 30px; }
-
         .input-section { margin-bottom: 25px; }
-
         .section-title {
             font-size: 13px;
             font-weight: 800;
             color: var(--yung-green);
             margin-bottom: 20px;
-            letter-spacing: 1px;
             display: flex;
             align-items: center;
         }
-
         .section-title::after {
             content: ""; flex: 1; height: 1px; background: #f1f5f9; margin-left: 10px;
         }
 
-        /* 關鍵修正：彈性網格 */
         .input-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* 電腦版維持雙欄 */
+            grid-template-columns: 1fr 1fr; 
             gap: 15px 20px;
         }
 
@@ -151,14 +142,22 @@
             box-sizing: border-box;
         }
 
-        input:focus, select:focus {
-            background: #fff;
-            border-color: var(--yung-green);
-            outline: none;
+        /* 儲存圖片時顯示的文字摘要樣式 */
+        #textSummary {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--yung-green);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #1a202c;
+            display: none; /* 平常不顯示 */
         }
 
         /* 表格樣式 */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th {
             color: #a0aec0;
             font-size: 11px;
@@ -167,16 +166,17 @@
             border-bottom: 2px solid #f1f5f9;
             text-align: center;
         }
-        td { padding: 15px 5px; border-bottom: 1px solid #f8fafc; text-align: center; word-break: break-all; }
+        td { padding: 15px 5px; border-bottom: 1px solid #f8fafc; text-align: center; }
         
         .col-price { color: var(--premium-blue); font-weight: 800; font-size: 16px; }
         .col-net-profit { color: var(--yung-red) !important; font-weight: 800 !important; font-size: 16px; }
         .highlight-row { background-color: #fffbeb !important; }
-        .col-formula { display: block; font-size: 9px; color: #cbd5e1; margin-top: 3px; font-weight: normal;}
+        .col-formula { display: block; font-size: 9px; color: #cbd5e1; margin-top: 3px; }
 
-        /* A4 模式強制參數 */
+        /* A4 儲存模式 */
         .export-mode { width: 850px !important; padding: 60px 80px !important; }
-        .export-mode .control-panel { display: none !important; }
+        .export-mode .control-panel .input-section { display: none !important; }
+        .export-mode #textSummary { display: block !important; } /* 儲存時強制顯示摘要 */
         .export-mode .wm-logo { top: 58%; width: 520px; }
         .export-mode .report-main-title { font-size: 28px; }
         .export-mode .brand-logo-img { height: 80px; }
@@ -189,34 +189,13 @@
             justify-content: space-between;
             color: #a0aec0;
             font-size: 12px;
-            line-height: 1.6;
         }
 
-        /* 🔥 手機版專屬修正：防止尺寸跑掉 🔥 */
         @media (max-width: 600px) {
-            body { padding: 10px 5px; }
-            #full-report-area:not(.export-mode) { padding: 25px 15px; border-radius: 15px; }
-            
             .btn-group { flex-direction: column; gap: 10px; }
-            
-            .report-branding { flex-direction: column; text-align: center; gap: 15px; }
-            .report-main-title { font-size: 18px; }
-            
-            /* 平常操作時變為單欄，避免格子太窄 */
-            #full-report-area:not(.export-mode) .input-grid { 
-                grid-template-columns: 1fr; 
-                gap: 12px;
-            }
-            
-            /* 三個一排的級距區塊在手機上改為單欄或調整 */
-            #full-report-area:not(.export-mode) .grid-three {
-                grid-template-columns: 1fr !important;
-            }
-
+            #full-report-area:not(.export-mode) .input-grid { grid-template-columns: 1fr; }
+            #full-report-area:not(.export-mode) .grid-three { grid-template-columns: 1fr !important; }
             .wm-logo { width: 250px; top: 85%; }
-            th { font-size: 10px; }
-            td { font-size: 12px; }
-            .col-price, .col-net-profit { font-size: 14px; }
         }
     </style>
 </head>
@@ -225,7 +204,7 @@
 <div class="app-container">
     <div class="btn-group">
         <button onclick="generateTable()">📊 重新計算</button>
-        <button class="btn-red" onclick="saveAsImage()">📸 儲存 A4 報告圖</button>
+        <button class="btn-red" onclick="saveAsImage()">📸 儲存 A4 質感報表</button>
     </div>
 
     <div id="full-report-area">
@@ -239,36 +218,24 @@
         </div>
 
         <div class="control-panel">
-            <div id="textSummary" style="display:none; background:#f8fafc; border-left:5px solid var(--yung-green); padding:20px; border-radius:12px; font-size:16px; line-height:2; margin-bottom:30px; color:#1a202c;">
+            <div id="textSummary">
                 <strong>報告設定條件：</strong><br>
-                買入總價 <span id="s_cost" style="color:var(--premium-blue); font-weight:bold;">1000</span> 萬 | 
-                裝潢成本 <span id="s_reno" style="color:var(--premium-blue); font-weight:bold;">50</span> 萬 |
-                房地合一稅率 <span id="s_tax" style="color:var(--yung-red); font-weight:bold;">35</span>% <br>
-                買方仲介費 <span id="s_buyAgency">20</span> 萬 | 
-                買方規費 <span id="s_buyOther">10</span> 萬 | 
-                賣方仲介費 <span id="s_sellAgency">4</span> <span id="s_sellAgencyType">%</span> | 
-                賣方規費 <span id="s_sellOther">0</span> 萬
+                買入總價 <span id="s_cost" style="color:var(--premium-blue); font-weight:bold;">-</span> 萬 | 
+                裝潢成本 <span id="s_reno" style="color:var(--premium-blue); font-weight:bold;">-</span> 萬 |
+                房地合一稅率 <span id="s_tax" style="color:var(--yung-red); font-weight:bold;">-</span> <br>
+                買方仲介費 <span id="s_buyAgency">-</span> 萬 | 
+                買方規費 <span id="s_buyOther">-</span> 萬 | 
+                賣方仲介費 <span id="s_sellAgency">-</span> <span id="s_sellAgencyType">-</span> | 
+                賣方規費 <span id="s_sellOther">-</span> 萬
             </div>
 
             <div class="input-section">
                 <div class="section-title">物件取得設定</div>
                 <div class="input-grid">
-                    <div class="input-group">
-                        <label>買入總價 (萬)</label>
-                        <input type="number" id="costPrice" value="1000">
-                    </div>
-                    <div class="input-group">
-                        <label>可列舉裝潢成本 (萬)</label>
-                        <input type="number" id="renovationCost" value="50">
-                    </div>
-                    <div class="input-group">
-                        <label>買方仲介服務費 (萬)</label>
-                        <input type="number" id="buyAgencyFee" value="20">
-                    </div>
-                    <div class="input-group">
-                        <label>代書費與契稅規費 (萬)</label>
-                        <input type="number" id="buyOtherFees" value="10">
-                    </div>
+                    <div class="input-group"><label>買入總價 (萬)</label><input type="number" id="costPrice" value="1000"></div>
+                    <div class="input-group"><label>可列舉裝潢成本 (萬)</label><input type="number" id="renovationCost" value="50"></div>
+                    <div class="input-group"><label>買方仲介服務費 (萬)</label><input type="number" id="buyAgencyFee" value="20"></div>
+                    <div class="input-group"><label>代書費與契稅規費 (萬)</label><input type="number" id="buyOtherFees" value="10"></div>
                 </div>
             </div>
 
@@ -295,32 +262,21 @@
                             <input type="number" id="agencyRate" value="4" style="flex: 1;">
                         </div>
                     </div>
-                    <div class="input-group">
-                        <label>賣方其他規費 (萬)</label>
-                        <input type="number" id="otherSellingFees" value="0">
-                    </div>
+                    <div class="input-group"><label>賣方其他規費 (萬)</label><input type="number" id="otherSellingFees" value="0"></div>
                 </div>
             </div>
 
             <div class="input-section">
                 <div class="section-title">表格對照範圍</div>
                 <div class="input-grid grid-three" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="input-group">
-                        <label>基準成交價 (萬)</label>
-                        <input type="number" id="basePrice" value="1500">
-                    </div>
+                    <div class="input-group"><label>基準成交價 (萬)</label><input type="number" id="basePrice" value="1500"></div>
                     <div class="input-group">
                         <label>級距單位</label>
                         <select id="stepValue">
-                            <option value="5">5萬</option>
-                            <option value="10" selected>10萬</option>
-                            <option value="20">20萬</option>
+                            <option value="5">5萬</option><option value="10" selected>10萬</option><option value="20">20萬</option>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <label>顯示筆數</label>
-                        <input type="number" id="rowCount" value="8">
-                    </div>
+                    <div class="input-group"><label>顯示筆數</label><input type="number" id="rowCount" value="8"></div>
                 </div>
             </div>
         </div>
@@ -330,7 +286,6 @@
                 <div style="font-size:16px; color:var(--yung-red); font-weight:700; margin-bottom:5px;">(成屋專用) 稅務試算對照表</div>
                 <div style="font-size:12px; color:var(--text-sub); background:#f8fafc; display:inline-block; padding:4px 12px; border-radius:50px;">系統已自動為您選擇最優的抵扣費用</div>
             </div>
-            
             <table>
                 <thead>
                     <tr>
@@ -366,8 +321,12 @@
         const reno = parseFloat(document.getElementById('renovationCost').value) || 0;
         const buyAgency = parseFloat(document.getElementById('buyAgencyFee').value) || 0;
         const buyOther = parseFloat(document.getElementById('buyOtherFees').value) || 0;
-        const taxRate = parseFloat(document.getElementById('taxRate').value) / 100 || 0;
-        const isSelfUse = (document.getElementById('taxRate').value === '10');
+        
+        const taxSelect = document.getElementById('taxRate');
+        const taxRate = parseFloat(taxSelect.value) / 100 || 0;
+        const taxText = taxSelect.options[taxSelect.selectedIndex].text;
+        const isSelfUse = (taxSelect.value === '10');
+
         const agencyFeeType = document.getElementById('agencyFeeType').value;
         const agencyRate = parseFloat(document.getElementById('agencyRate').value) || 0;
         const otherSellFee = parseFloat(document.getElementById('otherSellingFees').value) || 0;
@@ -375,11 +334,12 @@
         const stepValue = parseFloat(document.getElementById('stepValue').value) || 0;
         const rowCount = parseInt(document.getElementById('rowCount').value) || 8;
 
+        // 🔥 關鍵修復：同步數據到隱藏摘要區，確保儲存圖片時看得到 🔥
         document.getElementById('s_cost').innerText = costPrice;
         document.getElementById('s_reno').innerText = reno;
         document.getElementById('s_buyAgency').innerText = buyAgency;
         document.getElementById('s_buyOther').innerText = buyOther;
-        document.getElementById('s_tax').innerText = document.getElementById('taxRate').value;
+        document.getElementById('s_tax').innerText = taxText;
         document.getElementById('s_sellAgency').innerText = agencyRate;
         document.getElementById('s_sellAgencyType').innerText = (agencyFeeType === 'percent' ? '%' : '萬');
         document.getElementById('s_sellOther').innerText = otherSellFee;
@@ -417,10 +377,9 @@
 
     function saveAsImage() {
         document.querySelectorAll('input').forEach(i => i.blur());
-        generateTable();
+        generateTable(); // 先生成一遍數據確保摘要同步
         const area = document.getElementById('full-report-area');
-        area.classList.add('export-mode');
-        window.scrollTo(0, 0);
+        area.classList.add('export-mode'); // 開啟 A4 模式
 
         setTimeout(() => {
             html2canvas(area, {
@@ -431,12 +390,12 @@
                 height: area.offsetHeight 
             }).then(canvas => {
                 let link = document.createElement('a');
-                link.download = `成屋獲利對照表_${new Date().getTime()}.png`;
+                link.download = `獲利對照表_${costPrice.value}萬_${new Date().getTime()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-                area.classList.remove('export-mode');
+                area.classList.remove('export-mode'); // 恢復正常手機比例
             }).catch(() => area.classList.remove('export-mode'));
-        }, 400); 
+        }, 500); 
     }
     window.onload = generateTable;
 </script>
