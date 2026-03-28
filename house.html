@@ -62,18 +62,34 @@
             overflow: hidden; 
         }
 
-        #full-report-area::before {
-            content: "";
+        /* --- 6 個固定位置浮水印 --- */
+        .watermark-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='250'%3E%3Ctext transform='rotate(-30 150 150)' x='-10' y='150' fill='black' fill-opacity='0.06' font-size='17' font-family='Microsoft JhengHei' font-weight='bold'%3E承峰不動產仲介有限公司 版權所有 非本公司員工禁止使用。%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
-            z-index: 50; 
-            pointer-events: none; 
+            pointer-events: none;
+            z-index: 10;
         }
+        .wm {
+            position: absolute;
+            text-align: center;
+            transform: rotate(-25deg);
+            color: rgba(0, 0, 0, 0.05);
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.5;
+            white-space: nowrap;
+            width: 250px;
+        }
+        /* 定位 6 個點 */
+        .wm-1 { top: 12%; left: 5%; }
+        .wm-2 { top: 12%; right: 5%; }
+        .wm-3 { top: 48%; left: 5%; }
+        .wm-4 { top: 48%; right: 5%; }
+        .wm-5 { bottom: 15%; left: 5%; }
+        .wm-6 { bottom: 15%; right: 5%; }
 
         .report-branding {
             display: flex;
@@ -85,9 +101,7 @@
             position: relative; z-index: 20; 
         }
 
-        .brand-logo-container {
-            flex: 0 0 auto;
-        }
+        .brand-logo-container { flex: 0 0 auto; }
         .brand-logo-img {
             height: 90px; 
             display: block;
@@ -173,14 +187,8 @@
             gap: 5px;
             width: 100%;
         }
-        .flex-row > select {
-            flex: 0 0 40%; 
-            min-width: 0;  
-        }
-        .flex-row > input {
-            flex: 1;       
-            min-width: 0;  
-        }
+        .flex-row > select { flex: 0 0 40%; min-width: 0; }
+        .flex-row > input { flex: 1; min-width: 0; }
 
         .capture-area {
             margin-top: 10px;
@@ -237,10 +245,6 @@
             color: #aaa;
             margin-top: 2px;
         }
-        table, th, td {
-            border-left: none;
-            border-right: none;
-        }
         .highlight-row {
             background-color: #fff4b3 !important; 
         }
@@ -263,9 +267,7 @@
                 padding: 15px;
                 border-top: 6px solid var(--yung-yellow); 
             }
-            #full-report-area::before {
-                background-size: 280px 200px; 
-            }
+            .wm { font-size: 12px; width: 180px; }
             .report-branding {
                 flex-direction: column;
                 gap: 10px;
@@ -301,6 +303,14 @@
     </div>
 
     <div id="full-report-area">
+        <div class="watermark-overlay">
+            <div class="wm wm-1">版權所有<br>承峰不動產仲介有限公司<br>(非本店員工禁止操作使用)</div>
+            <div class="wm wm-2">版權所有<br>承峰不動產仲介有限公司<br>(非本店員工禁止操作使用)</div>
+            <div class="wm wm-3">版權所有<br>承峰不動產仲介有限公司<br>(非本店員工禁止操作使用)</div>
+            <div class="wm wm-4">版權所有<br>承峰不動產仲介有限公司<br>(非本店員工禁止操作使用)</div>
+            <div class="wm wm-5">版權所有<br>承峰不動產仲介有限公司<br>(非本店員工禁止操作使用)</div>
+            <div class="wm wm-6">版權所有<br>承峰不動產仲介有限公司<br>(非本店員工禁止操作使用)</div>
+        </div>
         
         <div class="report-branding">
             <div class="brand-logo-container">
@@ -437,7 +447,7 @@
             
             <div class="footer-info">
                 <div>
-                    <strong>承峰不動產仲介有限公司 (永義房屋斗六成功加盟店)</strong><br>
+                    <strong>承峰不動產仲介有限公司 (永義房屋斗六成功莊敬加盟店)</strong><br>
                     雲林縣斗六市成功二街126號
                 </div>
                 <div style="text-align: right; max-width: 65%; ">
@@ -467,9 +477,8 @@
         };
 
         Object.values(inputs).forEach(el => {
-            if(el.tagName === 'INPUT') {
-                el.setAttribute('value', el.value);
-            } else if (el.tagName === 'SELECT') {
+            if(el.tagName === 'INPUT') el.setAttribute('value', el.value);
+            else if (el.tagName === 'SELECT') {
                 const opts = el.options;
                 for(let i=0; i<opts.length; i++){
                     if(opts[i].value == el.value) opts[i].setAttribute('selected', 'selected');
@@ -490,74 +499,49 @@
         document.getElementById('textSummary').style.display = 'block';
 
         const costPrice = parseFloat(inputs.costPrice.value) || 0;
-        const buyAgencyFee = parseFloat(inputs.buyAgencyFee.value) || 0;
-        const buyOtherFees = parseFloat(inputs.buyOtherFees.value) || 0;
-        const renovationCost = parseFloat(inputs.renovationCost.value) || 0;
-        const totalAcquisitionCosts = buyAgencyFee + buyOtherFees + renovationCost;
+        const buyFees = (parseFloat(inputs.buyAgencyFee.value) || 0) + 
+                        (parseFloat(inputs.buyOtherFees.value) || 0) + 
+                        (parseFloat(inputs.renovationCost.value) || 0);
         const landIncrement = parseFloat(inputs.landIncrement.value) || 0;
-        
         const taxRateSelect = inputs.taxRate.value;
         const taxRate = parseFloat(taxRateSelect) / 100 || 0;
-        const isSelfUse = (taxRateSelect === '10'); 
+        const isSelfUse = (taxRateSelect === '10');
 
         const agencyFeeType = inputs.agencyFeeType.value;
         const agencyRateValue = parseFloat(inputs.agencyRate.value) || 0;
         const otherSellingFees = parseFloat(inputs.otherSellingFees.value) || 0;
-        
         const basePrice = parseFloat(inputs.basePrice.value) || 0;
         const stepValue = parseFloat(inputs.stepValue.value) || 0;
-        
-        let rowCount = parseInt(inputs.rowCount.value);
-        if (isNaN(rowCount) || rowCount < 1) rowCount = 10;
+        let rowCount = parseInt(inputs.rowCount.value) || 8;
 
         const today = new Date();
         document.getElementById('dateDisplay').innerText = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
 
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
-
-        const totalCost = costPrice + totalAcquisitionCosts;
+        const totalCost = costPrice + buyFees;
 
         for(let i = 0; i >= -rowCount; i--) {
             let currentPrice = basePrice + (i * stepValue);
-            
-            let actualSellingExpense = 0;
-            if(agencyFeeType === 'percent') {
-                actualSellingExpense = (currentPrice * (agencyRateValue / 100)) + otherSellingFees;
-            } else {
-                actualSellingExpense = agencyRateValue + otherSellingFees;
-            }
+            let actualSellingExpense = (agencyFeeType === 'percent') ? 
+                (currentPrice * (agencyRateValue / 100)) + otherSellingFees : 
+                agencyRateValue + otherSellingFees;
              
-            let statutoryExpense = Math.min(currentPrice * 0.03, 30); 
-            let deductibleExpense = Math.max(actualSellingExpense, statutoryExpense); 
-            
-            let deducMethod = "";
-            if (actualSellingExpense >= statutoryExpense) {
-                deducMethod = "(採仲介費)";
-            } else {
-                deducMethod = "(採免稅額)";
-            }
+            let statutoryExpense = Math.min(currentPrice * 0.03, 30);
+            let deductibleExpense = Math.max(actualSellingExpense, statutoryExpense);
+            let deducMethod = (actualSellingExpense >= statutoryExpense) ? "(採仲介費)" : "(採免稅額)";
 
-            let taxBase = currentPrice - totalCost - deductibleExpense - landIncrement;
-            
-            if (isSelfUse) {
-                taxBase = Math.max(0, taxBase - 400);
-            } else {
-                taxBase = Math.max(0, taxBase);
-            }
+            let taxBase = Math.max(0, currentPrice - totalCost - deductibleExpense - landIncrement);
+            if (isSelfUse) taxBase = Math.max(0, taxBase - 400);
 
             let taxAmount = taxBase * taxRate;
-            let netProfit = currentPrice - costPrice - totalAcquisitionCosts - actualSellingExpense - taxAmount;
+            let netProfit = currentPrice - totalCost - actualSellingExpense - taxAmount;
 
             let tr = document.createElement('tr');
             if (i === 0) tr.className = 'highlight-row';
 
             const formatNum = (num) => num.toFixed(2);
-            const getColor = (num) => {
-                if(num > 0) return 'var(--yung-green)';
-                if(num < 0) return 'var(--yung-red)';
-                return 'var(--brand-gray)';
-            };
+            const getColor = (num) => (num > 0) ? 'var(--yung-green)' : (num < 0 ? 'var(--yung-red)' : 'var(--brand-gray)');
 
             tr.innerHTML = `
                 <td style="font-weight: bold; color: var(--table-blue);">${currentPrice}</td>
@@ -577,7 +561,6 @@
     function saveAsImage() {
         document.querySelectorAll('input').forEach(input => input.blur());
         generateTable();
-
         const captureElement = document.getElementById('full-report-area');
         window.scrollTo(0, 0);
 
@@ -591,20 +574,16 @@
                 height: captureElement.scrollHeight,
                 windowWidth: captureElement.scrollWidth,
                 windowHeight: captureElement.scrollHeight,
-                y: 0,
-                x: 0
+                y: 0, x: 0
             }).then(canvas => {
                 let link = document.createElement('a');
                 link.download = `成屋獲利報告_${new Date().getTime()}.png`;
                 link.href = canvas.toDataURL('image/png');
-                
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                
             }).catch(err => {
-                console.error('圖片儲存失敗:', err);
-                alert('截圖失敗！\n\n若您是「直接點擊 HTML 檔案」開啟網頁，可能會被瀏覽器的安全機制擋下。\n建議：改用 Chrome 瀏覽器，或是使用電腦內建的截圖工具！');
+                alert('截圖失敗！建議使用 Chrome 瀏覽器。');
             });
         }, 100); 
     }
