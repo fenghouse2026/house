@@ -168,8 +168,13 @@
             font-size: 12px;
             color: #888;
         }
+        
+        /* --- 修復截圖時文字被切掉的關鍵設定 --- */
         input, select {
             padding: 8px 10px;
+            height: 42px; /* 增加明確的固定高度 */
+            line-height: normal; /* 讓文字自然垂直置中 */
+            font-family: inherit; /* 強制繼承字體，避免預設字體高度計算誤差 */
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 15px;
