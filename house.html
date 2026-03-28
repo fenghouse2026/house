@@ -518,22 +518,25 @@
     }
 
     function saveAsImage() {
+        // 先強制讓所有輸入框失焦，確保手機鍵盤收起
         document.querySelectorAll('input').forEach(input => input.blur());
         generateTable();
+        
         const captureElement = document.getElementById('full-report-area');
+        
+        // 滾動到最上方避免跑版
         window.scrollTo(0, 0);
 
+        // 延長等待時間至 300ms，確保手機鍵盤完全收回且版面高度重算完成
         setTimeout(() => {
             html2canvas(captureElement, {
                 scale: 2, 
                 backgroundColor: "#ffffff", 
                 useCORS: true, 
                 logging: false, 
-                width: captureElement.scrollWidth,  
-                height: captureElement.scrollHeight,
-                windowWidth: captureElement.scrollWidth,
-                windowHeight: captureElement.scrollHeight,
-                y: 0, x: 0
+                // 🔥 修改重點：強制鎖定成實際元素的寬高，避免手機抓到過長的虛擬頁面高度
+                width: captureElement.offsetWidth,  
+                height: captureElement.offsetHeight 
             }).then(canvas => {
                 let link = document.createElement('a');
                 link.download = `成屋獲利報告_${new Date().getTime()}.png`;
@@ -544,7 +547,7 @@
             }).catch(err => {
                 alert('截圖失敗！建議使用 Chrome 瀏覽器。');
             });
-        }, 100); 
+        }, 300); 
     }
 
     window.onload = generateTable;
