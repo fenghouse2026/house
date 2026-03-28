@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>成屋獲利報告 - 永義房屋斗六成功莊敬加盟店</title>
+    <title>成屋獲利旗艦報告 - 永義房屋斗六成功莊敬加盟店</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --yung-yellow: #fdb913; 
-            --yung-red: #D82A29;    
             --yung-green: #008C4A;  
+            --yung-red: #D82A29;    
             --text-main: #1e293b;
-            --text-sub: #64748b;
+            --text-sub: #94a3b8;
             --premium-blue: #0f172a; 
-            --border-light: #e2e8f0;
+            --border-color: #e2e8f0;
         }
 
         body {
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-            background: #f1f5f9;
+            background: #f8fafc;
             color: var(--text-main);
             padding: 40px 20px;
             margin: 0;
@@ -27,162 +27,118 @@
 
         .app-container { max-width: 850px; margin: auto; }
         
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
+        .btn-group { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
 
         button {
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px; /* 縮小圓角，更精鍊 */
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer;
+            font-size: 14px; font-weight: 700; transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .btn-calc { background: var(--yung-green); color: white; }
         .btn-save { background: var(--yung-red); color: white; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        button:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
 
-        /* 報表主體 */
         #full-report-area {
-            background: #ffffff;
-            padding: 60px 70px; 
-            border-radius: 20px; /* 報表紙張感 */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            position: relative; 
-            overflow: hidden; 
+            background: #ffffff; padding: 70px 80px; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            position: relative; overflow: hidden; 
         }
 
         #full-report-area::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 8px; height: 100%;
+            content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%;
             background: linear-gradient(to bottom, var(--yung-yellow), var(--yung-green));
         }
 
-        .watermark-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 10; pointer-events: none;
-        }
+        .watermark-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; pointer-events: none; }
+        .wm-logo { position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); width: 520px; opacity: 0.035; }
 
-        .wm-logo {
-            position: absolute;
-            top: 75%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 520px; 
-            opacity: 0.035; 
-        }
-
-        /* Header */
-        .report-branding {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
+        .report-branding { display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; text-align: center; }
         .brand-logo-img { height: 75px; margin-bottom: 15px; }
-        .report-main-title {
-            color: var(--premium-blue);
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            margin: 0;
-        }
+        .report-main-title { color: var(--premium-blue); font-size: 28px; font-weight: 900; letter-spacing: 4px; margin: 0; }
 
-        /* --- 輕量化輸入區塊 --- */
         .control-panel { margin-bottom: 40px; }
-        .input-section { margin-bottom: 30px; }
+        .input-section { margin-bottom: 35px; }
         
         .section-title {
-            font-size: 13px; font-weight: 800; color: var(--yung-green);
-            margin-bottom: 15px; letter-spacing: 1px;
-            display: flex; align-items: center;
+            font-size: 12px; font-weight: 800; color: var(--yung-green);
+            margin-bottom: 20px; letter-spacing: 1px; display: flex; align-items: center;
         }
         .section-title::after { content: ""; flex: 1; height: 1px; background: #f1f5f9; margin-left: 10px; }
 
-        /* 關鍵修正：更精緻的格子排版 */
-        .input-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-            gap: 15px 25px; 
-        }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px 35px; }
 
         .input-group label { 
-            font-weight: 700; 
-            font-size: 12px; 
-            color: var(--text-sub); 
-            margin-bottom: 6px;
-            display: block;
+            font-weight: 700; font-size: 11px; color: var(--text-sub); 
+            margin-bottom: 4px; display: block;
         }
 
         input, select {
             background: transparent;
-            border: 1px solid var(--border-light); /* 改為細邊框線 */
-            border-radius: 6px; /* 更銳利專業的圓角 */
-            padding: 8px 12px;
-            height: 40px; /* 大幅縮小高度 */
-            font-size: 14px;
-            font-weight: 600;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 0;
+            padding: 4px 0px;
+            height: 32px;
+            font-size: 15px;
+            font-weight: 700;
             color: var(--text-main);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             width: 100%;
             box-sizing: border-box;
         }
 
         input:focus, select:focus {
-            border-color: var(--yung-green);
-            box-shadow: 0 0 0 3px rgba(0, 140, 74, 0.05);
+            border-bottom: 2px solid var(--yung-green);
             outline: none;
-            background: #fff;
         }
 
-        /* 摘要樣式 */
         #textSummary {
-            background: #f8fafc;
-            border-radius: 12px; padding: 25px;
+            background: #fafafa; border-radius: 10px; padding: 25px;
             font-size: 15px; line-height: 1.8; margin-bottom: 35px;
-            display: none; border: 1px solid #e2e8f0;
+            display: none; border: 1px solid #f0f0f0;
         }
 
-        /* 表格樣式 */
-        table { width: 100%; border-collapse: separate; border-spacing: 0 5px; margin-top: 15px; }
-        th { color: #94a3b8; font-size: 11px; font-weight: 800; padding: 10px; text-align: center; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 6px; margin-top: 15px; }
+        th { color: #cbd5e1; font-size: 11px; font-weight: 800; padding: 10px; text-align: center; }
         td { 
-            padding: 16px 8px; text-align: center; background: #fff;
+            padding: 18px 10px; text-align: center; background: #fff;
             border-top: 1px solid #f8fafc; border-bottom: 1px solid #f8fafc;
         }
-        td:first-child { border-left: 1px solid #f8fafc; border-radius: 8px 0 0 8px; }
-        td:last-child { border-right: 1px solid #f8fafc; border-radius: 0 8px 8px 0; }
+        td:first-child { border-left: 1px solid #f8fafc; border-radius: 12px 0 0 12px; }
+        td:last-child { border-right: 1px solid #f8fafc; border-radius: 0 12px 12px 0; }
         
-        .col-price { color: var(--premium-blue); font-weight: 900; font-size: 16px; }
-        .col-net-profit { color: var(--yung-red) !important; font-weight: 900 !important; font-size: 16px; }
+        .unit-label { font-size: 10px; color: #94a3b8; font-weight: 600; margin-left: 2px; }
+        .col-price { color: var(--premium-blue); font-weight: 900; font-size: 18px; }
+        .col-net-profit { color: var(--yung-red) !important; font-weight: 900 !important; font-size: 18px; }
         
-        .highlight-row td { background: #fffbeb; border-color: #fef3c7; }
+        .highlight-row td { background: #fffbeb !important; border-color: #fef3c7 !important; }
 
-        /* A4 模式 */
-        .export-mode { width: 850px !important; padding: 70px 80px !important; }
+        .export-mode { width: 850px !important; padding: 70px 80px !important; border-radius: 0 !important; }
         .export-mode .control-panel { display: none !important; }
         .export-mode #textSummary { display: block !important; }
         .export-mode .wm-logo { top: 60%; width: 550px; }
 
+        /* 🔥 更新後的 Footer 樣式 🔥 */
         .footer-info {
-            margin-top: 50px; padding-top: 25px; border-top: 1px solid #f1f5f9;
-            display: flex; justify-content: space-between; color: #94a3b8; font-size: 12px;
+            margin-top: 60px; padding-top: 30px; border-top: 1px solid #f1f5f9;
+            display: flex; justify-content: space-between; align-items: flex-end;
+            color: #94a3b8; font-size: 12px; line-height: 1.6;
+        }
+        .footer-disclaimer {
+            text-align: right;
+            max-width: 400px;
+        }
+        .disclaimer-text {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 4px;
         }
 
         @media (max-width: 600px) {
-            .btn-group { flex-direction: column; }
-            #full-report-area:not(.export-mode) { padding: 30px 15px; }
-            .input-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .grid-three { grid-template-columns: 1fr 1fr 1fr !important; }
-            .report-main-title { font-size: 22px; }
+            #full-report-area:not(.export-mode) { padding: 40px 20px; }
+            .input-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .grid-three { grid-template-columns: repeat(3, 1fr) !important; gap: 10px !important;}
         }
     </style>
 </head>
@@ -213,7 +169,7 @@
                 買方服務費 <span id="s_buyAgency">-</span> 萬 | 
                 買方規費 <span id="s_buyOther">-</span> 萬 | 
                 賣方服務費 <span id="s_sellAgency">-</span> <span id="s_sellAgencyType">-</span> | 
-                賣方規費 <span id="s_sellOther">-</span> 萬
+                賣方其他規費 <span id="s_sellOther">-</span> 萬
             </div>
 
             <div class="input-section">
@@ -241,8 +197,8 @@
                     </div>
                     <div class="input-group">
                         <label>賣方仲介服務費</label>
-                        <div style="display: flex; gap: 5px;">
-                            <select id="agencyFeeType" style="flex: 0 0 35%;">
+                        <div style="display: flex; gap: 10px;">
+                            <select id="agencyFeeType" style="flex: 0 0 30%;">
                                 <option value="percent">%</option>
                                 <option value="fixed">萬</option>
                             </select>
@@ -269,8 +225,8 @@
         </div>
 
         <div class="capture-area">
-            <div style="text-align:center; margin-bottom:20px;">
-                <div style="font-size:11px; color:var(--text-sub); background:#f8fafc; display:inline-block; padding:4px 12px; border-radius:50px; font-weight:700;">系統已擇優認列抵扣費用</div>
+            <div style="text-align:center; margin-bottom:25px;">
+                <div style="font-size:11px; color:var(--text-sub); background:#f8fafc; display:inline-block; padding:5px 16px; border-radius:50px; font-weight:700;">系統已擇優認列抵扣費用</div>
             </div>
             <table>
                 <thead>
@@ -287,13 +243,15 @@
             </table>
             
             <div class="footer-info">
-                <div>
+                <div class="footer-branch">
                     <strong style="color:var(--premium-blue); font-size: 14px;">永義房屋斗六成功莊敬加盟店</strong><br>
-                    <span style="font-size: 11px;">(承峰不動產仲介有限公司) | 雲林縣斗六市成功二街126號</span>
+                    <span>承峰不動產仲介有限公司 | 雲林縣斗六市成功二街126號</span>
                 </div>
-                <div style="text-align: right;">
-                    製表時間：<span id="dateDisplay"></span><br>
-                    實際稅額以國稅局核定為準
+                <div class="footer-disclaimer">
+                    <div>製表時間：<span id="dateDisplay"></span></div>
+                    <div class="disclaimer-text">
+                        <strong>免責聲明：</strong>實際稅額以國稅局核定為準，計算錯誤時不負擔任何責任。
+                    </div>
                 </div>
             </div>
         </div>
@@ -345,12 +303,12 @@
             let tr = document.createElement('tr');
             if (i === 0) tr.className = 'highlight-row';
             tr.innerHTML = `
-                <td class="col-price">${currentPrice}萬</td>
+                <td class="col-price">${currentPrice}<span class="unit-label">萬</span></td>
                 <td>${actualSellingExp.toFixed(1)}</td>
                 <td>${deducExp.toFixed(1)}</td>
                 <td>${taxBase.toFixed(1)}</td>
                 <td>${tax.toFixed(1)}</td>
-                <td class="col-net-profit">${netProfit.toFixed(1)}萬</td>
+                <td class="col-net-profit">${netProfit.toFixed(1)}<span class="unit-label">萬</span></td>
             `;
             tbody.appendChild(tr);
         }
