@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>永義房屋｜成功莊敬店</title>
+    <title>永義房屋｜成功莊敬店 </title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -13,18 +13,19 @@
             --yung-red: #D82A29;
             --yung-gold: #FDB913;
             --navy-blue: #001F5B;
+            --glass-white: rgba(255, 255, 255, 0.72);
+            --border-light: rgba(255, 255, 255, 0.4);
             --text-dark: #1d1d1f;
-            --text-gray: #86868b;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "PingFang TC", sans-serif;
-            background-color: var(--apple-bg);
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
             margin: 0; padding: 20px 0; display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
-        /* 💡 動態琥珀暖光背景 */
+        /* 💡 背景動態暖光 (清透優化) */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: 
@@ -48,8 +49,8 @@
 
         /* 控制面板：通透磨砂質感 */
         .control-panel { 
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            padding: 35px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.4);
+            background: var(--glass-white); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            padding: 35px; border-radius: 28px; border: 1px solid var(--border-light);
             display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; margin-bottom: 30px;
         }
         .input-group label { display: block; font-weight: 800; margin-bottom: 8px; font-size: 13px; color: var(--yung-green); }
@@ -58,10 +59,10 @@
             font-size: 16px; box-sizing: border-box; background: rgba(255,255,255,0.7); font-weight: 700;
         }
 
-        /* 🍎 A4 究極藝術容器：光學磨砂水晶 ( image_8ee997 ) */
+        /* 🍎 A4 究極藝術容器 - 💡 特殊：存圖本身自帶毛玻璃漸層 */
         #output-container {
             width: 850px; 
-            background: rgba(255, 255, 255, 0.9); /* 高透明底確保清透 */
+            background: rgba(255, 255, 255, 0.9);
             padding: 55px 60px; box-sizing: border-box;
             display: flex; flex-direction: column; position: relative;
             box-shadow: 0 40px 100px rgba(0,0,0,0.08); margin-bottom: 50px;
@@ -71,7 +72,7 @@
         .brand-logo-img { height: 75px; }
         .report-title { color: var(--yung-green); font-size: 32px; font-weight: 900; margin: 0; }
 
-        /* 摘要面板 */
+        /* 條件摘要 */
         .summary-panel {
             background: rgba(255, 255, 255, 0.5); border: 1.5px solid var(--yung-gold);
             padding: 25px 30px; margin-bottom: 25px; border-radius: 20px;
@@ -80,7 +81,7 @@
         .summary-line { font-size: 19px; color: #333; font-weight: 600; line-height: 2.2; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 8px; }
         .summary-line b { color: #000; font-size: 21px; margin: 0 4px; font-weight: 900; }
 
-        /* 💡 提示列 (image_8e7d5a) */
+        /* 💡 提示列 (image_8e7d5a 文字修正) */
         .hint-bar {
             background: rgba(0, 113, 227, 0.04); border: 1px solid rgba(0, 113, 227, 0.1);
             border-radius: 50px; padding: 12px 25px; margin-bottom: 35px;
@@ -88,7 +89,7 @@
             font-size: 16px; font-weight: 700; color: #1e3a8a;
         }
 
-        /* 表格區 */
+        /* 表格區 - 極致大字體與公式回歸 (image_8e797a) */
         table { width: 100%; border-collapse: separate; border-spacing: 0 15px; position: relative; z-index: 1; table-layout: fixed; }
         th { font-size: 15px; color: #1d1d1f; font-weight: 900; padding: 10px 0; text-align: center; border-bottom: 2px solid var(--yung-gold); vertical-align: top; }
         .th-note { font-size: 10px; color: var(--text-gray); font-weight: 500; display: block; margin-top: 3px; }
@@ -100,9 +101,8 @@
         .col-net { font-size: 38px; color: var(--yung-red); font-weight: 950; }
         .data-note { font-size: 11px; color: var(--text-gray); font-weight: 700; display: block; margin-top: 5px; white-space: nowrap; }
 
-        /* 頁腳修正 (image_8e107a) */
+        /* 頁腳 */
         .footer { margin-top: 40px; padding-top: 30px; border-top: 2px solid var(--yung-gold); display: flex; justify-content: space-between; align-items: flex-end; }
-        .footer-left { text-align: left; }
         .footer-left strong { font-size: 22px; color: #000; display: block; margin-bottom: 5px; font-weight: 900; }
         .footer-left span { font-size: 16px; color: var(--text-gray); font-weight: 700; }
         .footer-right { text-align: right; color: var(--text-gray); font-size: 13px; line-height: 1.8; }
@@ -244,7 +244,7 @@
         }
     }
 
-    // 💡 特殊優化：擷取時強迫 canvas 不考慮 body 背景，只考慮內容高度並鎖定寬度
+    // 💡 特殊優化：擷取時強迫 canvas 維持磨砂玻璃質感，並緊貼邊緣
     async function captureAndProcess() {
         const target = document.getElementById('output-container');
         // 擷取前暫時移除手機縮放 CSS 影響高度偵測
@@ -256,31 +256,28 @@
         const canvas = await html2canvas(target, { 
             scale: 4, 
             useCORS: true, 
-            // 💡 關鍵優化：擷取時強制模擬「清透暖光水晶感」
-            backgroundColor: null, // 透明背景
-            width: 850, 
-            height: target.offsetHeight, // 強制使用實際內容高度
-            windowHeight: target.offsetHeight,
+            backgroundColor: null, 
+            width: 850,
+            height: target.offsetHeight, // 💡 確保存圖緊貼內容高度，不留白
             onclone: (clonedDoc) => {
                 const el = clonedDoc.getElementById('output-container');
                 el.style.transform = 'none';
                 el.style.margin = '0';
-                el.style.borderRadius = '0'; // 擷取時不留圓角空白
+                // 💡 針對克隆物件強化琥珀金流體光暈與水晶邊邊 (image_8edad2)
+                el.style.background = "linear-gradient(165deg, rgba(255,255,255,0.99) 0%, rgba(255,253,240,0.96) 100%)";
+                el.style.boxShadow = "none";
+                el.style.borderRadius = "0";
+                el.style.border = "1px solid rgba(253, 185, 19, 0.2)";
                 
-                // 💡 在圖片克隆時強制將琥珀毛玻璃層注入底圖 (image_8ee997)
-                el.style.background = "linear-gradient(160deg, rgba(255,255,255,0.99) 0%, rgba(255,253,240,0.96) 100%)";
-                
-                // 💡 為圖片克隆物件加上高解析度的磨砂黑 900 權重黑體 (image_8e797a)，確保存圖清晰
-                el.querySelectorAll('.col-price, .col-net, .col-main-data').forEach(item => {
-                    item.style.fontWeight = "900";
-                    item.style.color = "#000000"; // 存圖時成交價也強迫黑白色，確保清晰，保留淨獲利紅色
+                // 💡 在存圖時再次強迫放大數據字體，確保手機長輩護眼 ( image_8ee619 )
+                el.querySelectorAll('.col-price, .col-net').forEach(item => {
+                    item.style.fontSize = (parseFloat(window.getComputedStyle(item).fontSize) * 1.05) + 'px';
+                    item.style.fontWeight = "950";
                 });
-                el.querySelectorAll('.col-price').forEach(i => i.style.color = "#001F5B"); // 恢復海軍藍
-                el.querySelectorAll('.col-net').forEach(i => i.style.color = "#D82A29"); // 恢復紅色
             }
         });
 
-        // 恢復手機預覽縮放
+        // 恢復手機預覽樣式
         target.style.transform = originalTransform;
         target.style.marginBottom = originalMargin;
         return canvas;
@@ -289,7 +286,7 @@
     async function handleMobileShare() {
         const canvas = await captureAndProcess();
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], '永義房屋琥珀水晶報告.png', { type: 'image/png' });
+            const file = new File([blob], '永義房屋專業報告.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({ files: [file], title: '獲利試算報告' });
             }
