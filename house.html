@@ -2,409 +2,295 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>成屋獲利對照報告Pro - 永義房屋</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成屋獲利對照報告 - 永義房屋</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --yung-yellow: #fdb913; 
-            --yung-red: #D82A29;    
             --yung-green: #008C4A;  
-            --brand-gray: #595757;  
-            --table-blue: #2c5282;  
-            --background: #f4f4f4;
-            --report-bg: #ffffff;
+            --yung-red: #D82A29;    
+            --premium-blue: #1e3a8a;
+            --brand-gray: #595757;
+            --border-color: #cccccc;
         }
+
         body {
             font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-            background-color: var(--background);
-            color: var(--brand-gray);
-            padding: 20px;
-            margin: 0;
-            overscroll-behavior: none; 
-            -webkit-text-size-adjust: 100%;
-        }
-        .app-container {
-            max-width: 1000px;
-            margin: auto;
-        }
-        
-        .btn-group {
-            text-align: center;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        button {
-            background: var(--yung-green);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        button:hover { background: #00703b; }
-        .btn-red { background: var(--yung-red); }
-        .btn-red:hover { background: #b02020; }
-
-        #full-report-area {
-            background: var(--report-bg);
-            padding: 40px; 
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-top: 10px solid var(--yung-yellow); 
-            position: relative; 
+            background: #f4f7f6; color: var(--brand-gray);
+            padding: 0; margin: 0;
+            width: 100%;
+            overflow-x: hidden;
         }
 
-        .report-branding {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        /* 主容器：電腦版限制寬度，手機版滿版 */
+        .app-container { 
+            width: 95%; 
+            max-width: 1050px; 
+            margin: 20px auto; 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            box-sizing: border-box;
+        }
+
+        /* 按鈕區 */
+        .btn-group { 
+            display: flex; 
+            justify-content: space-between; 
+            gap: 15px; 
+            margin-bottom: 30px; 
+        }
+        .btn-group button { 
+            border: none; 
+            padding: 20px 10px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 20px; 
+            font-weight: 900; 
+            flex: 1; 
+            transition: 0.3s; 
+            color: white; 
+        }
+        .btn-calc { background: var(--yung-green); box-shadow: 0 4px 10px rgba(0, 140, 74, 0.3); }
+        .btn-save { background: var(--yung-red); box-shadow: 0 4px 10px rgba(216, 42, 41, 0.3); }
+        .btn-pc { background: var(--premium-blue); }
+
+        /* 標題與 Logo */
+        .report-branding { 
+            text-align: center; 
             margin-bottom: 25px; 
-            padding-bottom: 15px;
             border-bottom: 2px solid var(--yung-red); 
+            padding-bottom: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
+        .brand-logo-img { height: 60px; }
+        .report-main-title { color: var(--yung-green); font-size: 28px; font-weight: bold; margin: 0; }
 
-        .brand-logo-img {
-            height: 90px; 
-            display: block;
-            width: auto;
-        }
-
-        .report-main-title {
-            color: var(--yung-green);
-            font-size: 28px;
-            font-weight: bold;
-            margin: 0;
-            text-align: right;
-        }
-
-        .control-panel {
-            background: #fdfdfd;
-            padding: 20px;
-            border-radius: 4px;
-            border: 1px solid #eee;
+        /* 設定區核心：手機上一列一列 */
+        .control-panel { background: #fdfdfd; padding: 20px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 25px; }
+        .control-panel h2 { text-align: center; font-size: 24px; border-bottom: 2px dashed #ccc; padding-bottom: 15px; margin-top: 0; font-weight: 900; }
+        
+        .input-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* 電腦版兩欄 */
+            gap: 20px; 
             margin-bottom: 20px; 
         }
-
-        .print-summary {
-            background: #f9f9f9;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            font-size: 14px;
-            line-height: 1.6;
-            border-left: 4px solid var(--yung-green);
-        }
-
-        .control-panel h2 {
-            text-align: center;
-            color: var(--brand-gray);
-            font-size: 18px;
-            border-bottom: 1px dashed #ccc;
-            padding-bottom: 10px;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-
-        /* 保持原始網格比例 */
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 13px;
-            color: #555;
-        }
-        /* 修正：字體不低於 16px 避免 iOS 點擊放大 */
-        input, select {
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px; 
-            box-sizing: border-box;
-            background-color: #fff;
-        }
-
-        /* 仲介費切換專用複合框 */
-        .agency-input-group {
-            display: flex;
-            gap: 2px;
-        }
-        .agency-input-group select {
-            flex: 0 0 65px;
-            padding: 8px 2px;
-            font-size: 14px;
-            border-right: none;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        .agency-input-group input {
-            flex: 1;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-            font-size: 15px;
-        }
-        th, td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #eee;
-        }
-        th {
-            color: var(--brand-gray);
-            font-weight: bold;
-            border-bottom: 2px solid #a0aec0; 
-            border-top: 2px solid #a0aec0;    
-        }
-        .highlight-row {
-            background-color: #fff4b3 !important; 
-        }
         
-        .footer-info {
-            margin-top: 30px;
-            padding-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #777;
-            border-top: 1px dashed #ccc;
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-weight: 900; margin-bottom: 8px; font-size: 18px; color: #444; }
+        
+        input, select { 
+            padding: 12px 15px; 
+            border: 2px solid var(--border-color); 
+            border-radius: 8px; 
+            font-size: 22px; 
+            font-weight: bold;
+            color: #1e3a8a;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        @media (max-width: 768px) {
-            #full-report-area { padding: 15px; }
-            .report-branding { flex-direction: column; text-align: center; }
-            .report-main-title { text-align: center; }
-            .footer-info { flex-direction: column; text-align: center; }
-            .footer-info div { text-align: center !important; }
+        /* 報表表格區 (支援手機橫向滑動) */
+        .report-area { 
+            overflow-x: auto; 
+            border-top: 6px solid #fdb913; 
+            padding-top: 20px; 
+            position: relative;
         }
+        table { width: 100%; min-width: 900px; border-collapse: collapse; }
+        th { background: #f8fafc; font-size: 16px; padding: 12px 5px; border-bottom: 2px solid #a0aec0; }
+        td { font-size: 22px; font-weight: bold; padding: 15px 5px; text-align: center; border-bottom: 1px solid #eee; }
+        
+        .highlight-row td { background-color: #fff4b3 !important; }
+        .col-net { color: var(--yung-red); }
+
+        /* 頁腳 */
+        .footer-info { 
+            margin-top: 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 14px; 
+            flex-wrap: wrap; 
+            gap: 15px;
+        }
+
+        /* 手機版專屬樣式 (Media Query) */
+        @media (max-width: 768px) {
+            .input-grid { 
+                grid-template-columns: 1fr; /* 關鍵：變成單欄一列 */
+            }
+            .btn-group { 
+                flex-direction: column; /* 按鈕垂直排 */
+            }
+            .report-branding { 
+                flex-direction: column; 
+                gap: 10px;
+            }
+            .report-main-title { font-size: 24px; }
+            .brand-logo-img { height: 50px; }
+        }
+
+        /* 匯出圖片時的狀態處理 */
+        .exporting { width: 1050px !important; } 
+        .exporting .control-panel, .exporting .btn-group { display: none; }
+        #exportSummary { display: none; margin-bottom: 20px; font-size: 20px; background: #f9f9f9; padding: 15px; border-left: 5px solid var(--yung-green); }
+        .exporting #exportSummary { display: block; }
+
+        /* Toast */
+        #toastMessage {
+            visibility: hidden; min-width: 250px; background-color: var(--yung-green); color: #fff;
+            text-align: center; border-radius: 50px; padding: 16px; position: fixed; z-index: 999;
+            left: 50%; transform: translateX(-50%); bottom: 30px; font-size: 18px; opacity: 0; transition: 0.5s;
+        }
+        #toastMessage.show { visibility: visible; opacity: 1; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div id="toastMessage">✅ 報表已成功處理！</div>
+
+<div class="app-container" id="main-app">
     <div class="btn-group">
-        <button onclick="generateTable()">重新產生試算表</button>
-        <button class="btn-red" onclick="saveAsImage()">一鍵儲存完整報告圖片</button>
+        <button class="btn-calc" onclick="generateTable()">📊 重新計算</button>
+        <button class="btn-save" id="btnSave" onclick="shareOrDownload()">📤 手機分享/儲存</button>
+        <button class="btn-pc" id="btnPc" onclick="directDownloadPC()">💻 電腦下載</button>
     </div>
 
-    <div id="full-report-area">
-        <div class="report-branding">
-            <div class="brand-logo-container">
-                <img src="logo.png" alt="品牌 LOGO" class="brand-logo-img" onerror="this.style.display='none'">
+    <div class="report-branding">
+        <img src="logo.png" alt="永義房屋" class="brand-logo-img" onerror="this.style.display='none'">
+        <h1 class="report-main-title">成屋獲利對照報告</h1>
+    </div>
+
+    <div class="control-panel">
+        <h2>一、成屋專屬參數設定</h2>
+        <div class="input-grid">
+            <div class="input-group">
+                <label>買入總價 (萬元)</label>
+                <input type="number" id="costPrice" value="1000">
             </div>
-            <h1 class="report-main-title">成屋獲利對照報告</h1>
-        </div>
-
-        <div class="control-panel report-section">
-            <h2>一、成屋專屬參數設定</h2>
-            
-            <div id="textSummary" class="print-summary" style="display:none;">
-                <strong>當前設定：</strong> 買入 <span id="s_cost">1000</span> 萬 | 
-                買費 <span id="s_buyTotal">30</span> 萬 | 
-                稅率 <span id="s_tax">35</span>% | 
-                賣仲 <span id="s_sellAgency">4%</span> | 
-                賣費 <span id="s_sellOther">0</span> 萬
+            <div class="input-group">
+                <label>購買時仲介費 (萬元)</label>
+                <input type="number" id="buyAgencyFee" value="20">
             </div>
-
-            <div class="input-grid">
-                <div class="input-group">
-                    <label>買入總價 (萬元)</label>
-                    <input type="number" id="costPrice" value="1000">
-                </div>
-                <div class="input-group">
-                    <label>購買時仲介費 (萬元)</label>
-                    <input type="number" id="buyAgencyFee" value="20">
-                </div>
-                <div class="input-group">
-                    <label>購買時代書費契稅等 (萬元)</label>
-                    <input type="number" id="buyOtherFees" value="10">
-                </div>
-                <div class="input-group">
-                    <label>可列舉裝潢成本 (萬元)</label>
-                    <input type="number" id="renovationCost" value="50">
-                </div>
-                <div class="input-group">
-                    <label>土地漲價總數額 (萬元)</label>
-                    <input type="number" id="landIncrement" value="0">
-                </div>
+            <div class="input-group">
+                <label>購買時代書費規費 (萬元)</label>
+                <input type="number" id="buyOtherFees" value="10">
             </div>
-
-            <div class="input-grid" style="border-top: 1px dashed #eee; padding-top: 15px;">
-                <div class="input-group">
-                    <label>房地合一稅率 (%)</label>
-                    <select id="taxRate">
-                        <option value="45">45%</option>
-                        <option value="35" selected>35%</option>
-                        <option value="20">20%</option>
-                        <option value="15">15%</option>
-                        <option value="10">10% (自用)</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>賣方仲介費</label>
-                    <div class="agency-input-group">
-                        <select id="agencyMode" onchange="generateTable()">
-                            <option value="percent">%</option>
-                            <option value="fixed">萬</option>
-                        </select>
-                        <input type="number" id="agencyValue" value="4" step="0.1">
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>賣方其他規費 (萬元)</label>
-                    <input type="number" id="otherSellingFees" value="0">
-                </div>
-            </div>
-            
-            <div class="input-grid" style="border-top: 1px dashed #eee; padding-top: 15px;">
-                <div class="input-group">
-                    <label>基準成交價 (萬元)</label>
-                    <input type="number" id="basePrice" value="1500">
-                </div>
-                <div class="input-group">
-                    <label>級距單位 (萬元)</label>
-                    <select id="stepValue">
-                        <option value="1">1萬</option>
-                        <option value="10" selected>10萬</option>
-                        <option value="50">50萬</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>往下延展筆數</label>
-                    <input type="number" id="rowCount" value="8">
-                </div>
+            <div class="input-group">
+                <label>可列舉裝潢成本 (萬元)</label>
+                <input type="number" id="renovationCost" value="50">
             </div>
         </div>
 
-        <div class="capture-area report-section">
-            <div class="report-header">
-                <div class="brand-subtitle">(成屋專用) 稅務試算表</div>
-                <div class="system-hint">系統擇優認列賣出費用 (實際費用 vs 3%最高30萬)</div>
+        <div class="input-grid" style="border-top: 1px dashed #ccc; padding-top: 20px;">
+            <div class="input-group">
+                <label>房地合一稅率 (%)</label>
+                <select id="taxRate">
+                    <option value="45">45% (持有2年內)</option>
+                    <option value="35" selected>35% (持有2-5年)</option>
+                    <option value="20">20% (持有5-10年)</option>
+                </select>
             </div>
-            
-            <table id="resultTable">
-                <thead>
-                    <tr>
-                        <th>成交價(萬)</th>
-                        <th class="hide-on-mobile">實付費用(萬)</th>
-                        <th>抵扣費用(萬)</th>
-                        <th>課稅所得(萬)</th>
-                        <th>房地合一稅(萬)</th>
-                        <th>淨獲利(萬)</th>
-                    </tr>
-                </thead>
-                <tbody id="resultBody"></tbody>
-            </table>
-            
-            <div class="footer-info">
-                <div><strong>承峰不動產仲介有限公司 (永義房屋)</strong></div>
-                <div style="text-align: right;">*製表時間：<span id="dateDisplay"></span></div>
+            <div class="input-group">
+                <label>賣方仲介費 (%)</label>
+                <input type="number" id="agencyRate" value="4">
             </div>
         </div>
+    </div>
+
+    <div id="exportSummary"></div>
+
+    <div class="report-area">
+        <table>
+            <thead>
+                <tr>
+                    <th>成交價</th>
+                    <th>實付費用</th>
+                    <th>抵扣費用</th>
+                    <th>課稅所得</th>
+                    <th>稅額</th>
+                    <th>淨獲利</th>
+                </tr>
+            </thead>
+            <tbody id="resultBody"></tbody>
+        </table>
+    </div>
+
+    <div class="footer-info">
+        <div><strong>永義房屋斗六成功莊敬加盟店</strong></div>
+        <div style="text-align:right;">製表時間：<span id="dateDisplay"></span></div>
     </div>
 </div>
 
 <script>
-    function generateTable() {
-        // 取值
-        const costPrice = parseFloat(document.getElementById('costPrice').value) || 0;
-        const buyAgencyFee = parseFloat(document.getElementById('buyAgencyFee').value) || 0;
-        const buyOtherFees = parseFloat(document.getElementById('buyOtherFees').value) || 0;
-        const renovationCost = parseFloat(document.getElementById('renovationCost').value) || 0;
-        const landIncrement = parseFloat(document.getElementById('landIncrement').value) || 0;
-        
-        const taxRateVal = document.getElementById('taxRate').value;
-        const taxRate = parseFloat(taxRateVal) / 100 || 0;
-        
-        const agencyMode = document.getElementById('agencyMode').value;
-        const agencyValue = parseFloat(document.getElementById('agencyValue').value) || 0;
-        const otherSellingFees = parseFloat(document.getElementById('otherSellingFees').value) || 0;
-        
-        const basePrice = parseFloat(document.getElementById('basePrice').value) || 0;
-        const stepValue = parseFloat(document.getElementById('stepValue').value) || 0;
-        const rowCount = parseInt(document.getElementById('rowCount').value) || 8;
+    function showSuccessToast(msg) {
+        const t = document.getElementById("toastMessage");
+        t.innerText = msg; t.className = "show";
+        setTimeout(() => { t.className = ""; }, 3000);
+    }
 
-        // 更新摘要
-        document.getElementById('s_cost').innerText = costPrice;
-        document.getElementById('s_buyTotal').innerText = (buyAgencyFee + buyOtherFees + renovationCost);
-        document.getElementById('s_tax').innerText = taxRateVal;
-        document.getElementById('s_sellAgency').innerText = agencyMode === 'percent' ? agencyValue + '%' : agencyValue + '萬';
-        document.getElementById('s_sellOther').innerText = otherSellingFees;
-        document.getElementById('textSummary').style.display = 'block';
+    function generateTable() {
+        const cost = parseFloat(document.getElementById('costPrice').value) || 0;
+        const buyFee = (parseFloat(document.getElementById('buyAgencyFee').value) || 0) + (parseFloat(document.getElementById('buyOtherFees').value) || 0);
+        const reno = parseFloat(document.getElementById('renovationCost').value) || 0;
+        const totalAcq = cost + buyFee + reno;
+        
+        const taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
+        const agencyRate = parseFloat(document.getElementById('agencyRate').value) / 100;
+
         document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString();
+        document.getElementById('exportSummary').innerHTML = `當前設定：買入 ${cost} 萬 | 買費 ${buyFee} 萬 | 稅率 ${(taxRate*100)}% | 賣仲 ${(agencyRate*100)}%`;
 
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
-        const totalAcquisition = buyAgencyFee + buyOtherFees + renovationCost;
-        const totalCostBase = costPrice + totalAcquisition;
-
-        for(let i = 0; i >= -rowCount; i--) {
-            let currentPrice = basePrice + (i * stepValue);
-            
-            // 計算賣方仲介費
-            let sellAgency = (agencyMode === 'percent') ? (currentPrice * (agencyValue / 100)) : agencyValue;
-            let actualSellingExpense = sellAgency + otherSellingFees; 
-            
-            // 抵扣費用擇優 (實際 vs 3%上限30萬)
-            let statutoryExpense = Math.min(currentPrice * 0.03, 30); 
-            let deductibleExpense = Math.max(actualSellingExpense, statutoryExpense); 
-
-            let taxBase = currentPrice - totalCostBase - deductibleExpense - landIncrement;
-            if (taxRateVal === '10') {
-                taxBase = Math.max(0, taxBase - 400);
-            } else {
-                taxBase = Math.max(0, taxBase);
-            }
-
-            let taxAmount = taxBase * taxRate;
-            let netProfit = currentPrice - totalCostBase - actualSellingExpense - taxAmount;
+        
+        // 模擬產生 8 筆數據
+        for(let i=0; i<8; i++) {
+            let price = cost + 500 - (i * 50);
+            let sellExp = price * agencyRate;
+            let deduc = Math.max(sellExp, Math.min(price * 0.03, 30));
+            let taxBase = Math.max(0, price - totalAcq - deduc);
+            let tax = taxBase * taxRate;
+            let net = price - totalAcq - sellExp - tax;
 
             let tr = document.createElement('tr');
-            if (i === 0) tr.className = 'highlight-row';
-
-            const getColor = (num) => num > 0 ? 'var(--yung-green)' : (num < 0 ? 'var(--yung-red)' : 'inherit');
-
-            tr.innerHTML = `
-                <td style="font-weight: bold; color: var(--table-blue);">${currentPrice}</td>
-                <td class="hide-on-mobile">${actualSellingExpense.toFixed(2)}</td>
-                <td style="color: #888;">${deductibleExpense.toFixed(2)}</td>
-                <td>${taxBase.toFixed(2)}</td>
-                <td>${taxAmount.toFixed(2)}</td>
-                <td style="font-weight: bold; color: ${getColor(netProfit)};">${netProfit.toFixed(2)}</td>
-            `;
+            if(i===0) tr.className = 'highlight-row';
+            tr.innerHTML = `<td>${price}</td><td>${sellExp.toFixed(1)}</td><td>${deduc.toFixed(1)}</td><td>${taxBase.toFixed(1)}</td><td>${tax.toFixed(1)}</td><td class="col-net">${net.toFixed(1)}</td>`;
             tbody.appendChild(tr);
         }
     }
 
-    function saveAsImage() {
-        const captureElement = document.getElementById('full-report-area');
-        html2canvas(captureElement, { scale: 2, backgroundColor: "#ffffff" }).then(canvas => {
-            let link = document.createElement('a');
-            link.download = `成屋報告_${new Date().getTime()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+    async function shareOrDownload() {
+        const app = document.getElementById('main-app');
+        // 截圖前強制模擬寬螢幕寬度，確保報表美觀
+        const isMobile = window.innerWidth < 768;
+        if(isMobile) app.style.width = "1050px";
+        
+        app.classList.add('exporting');
+        const canvas = await html2canvas(app, { scale: 2, useCORS: true });
+        app.classList.remove('exporting');
+        if(isMobile) app.style.width = "";
+
+        canvas.toBlob(async (blob) => {
+            const file = new File([blob], '獲利報告.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({ files: [file], title: '獲利報告' });
+            } else {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = '報告.png'; a.click();
+            }
+            showSuccessToast("✅ 處理完成！");
         });
+    }
+
+    function directDownloadPC() {
+        // 簡化電腦下載邏輯
+        showSuccessToast("💻 電腦版下載中...");
+        shareOrDownload();
     }
 
     window.onload = generateTable;
