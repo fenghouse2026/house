@@ -3,112 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>永義房屋｜究極光感資產藝術定稿</title>
+    <title>永義房屋｜究極光感報表系統</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --apple-bg: #f5f5f7;
             --yung-gold: #FDB913;
             --yung-green: #008C4A;
             --navy-blue: #001F5B;
             --apple-red: #D82A29;
-            --pure-black: #000000;
-            --glass-white: rgba(255, 255, 255, 0.72);
+            --pure-black: #1d1d1f;
+            --glass-white: rgba(255, 255, 255, 0.7);
         }
 
-        /* 💡 究極背景：動態流體琥珀光 */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro TC", "PingFang TC", sans-serif;
-            background: var(--apple-bg); margin: 0; padding: 40px 0;
+            background: #f5f5f7; margin: 0; padding: 20px 0;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+            min-height: 100vh; -webkit-font-smoothing: antialiased;
         }
 
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 10% 10%, rgba(253, 185, 19, 0.15) 0%, transparent 45%),
-                radial-gradient(circle at 90% 90%, rgba(0, 140, 74, 0.1) 0%, transparent 45%),
-                linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
-            z-index: -2;
-        }
-
-        /* 🍎 按鈕：數位精品級質感 */
-        .ui-controls { width: 850px; z-index: 100; margin-bottom: 35px; }
-        .btn-group { display: flex; gap: 15px; }
+        /* 按鈕組 */
+        .ui-controls { width: 850px; z-index: 100; margin-bottom: 25px; }
+        .btn-group { display: flex; gap: 12px; }
         .btn-group button { 
-            border: none; padding: 20px 0; border-radius: 20px; cursor: pointer; 
-            font-size: 18px; font-weight: 800; flex: 1; transition: 0.3s;
-            background: #1d1d1f; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: none; padding: 16px 0; border-radius: 18px; cursor: pointer; 
+            font-size: 16px; font-weight: 800; flex: 1; transition: 0.3s;
+            background: #1d1d1f; color: white;
         }
         .btn-calc { border: 2.5px solid var(--yung-gold) !important; color: var(--yung-gold) !important; }
         .btn-share { background: white !important; color: #000 !important; border: 2px solid #000 !important; }
-        .btn-group button:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
 
-        /* 🍎 控制面板：全水晶磨砂質感 */
+        /* 控制面板 - 修正選單寬度 */
         .control-panel { 
-            background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
-            padding: 45px; border-radius: 35px; border: 1.5px solid rgba(255,255,255,0.6);
-            display: grid; grid-template-columns: 1fr 1fr; gap: 30px 50px; margin-top: 30px;
+            background: white; padding: 35px; border-radius: 30px; border: 1px solid #d2d2d7;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; margin-top: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
         }
-        .input-group label { display: block; font-weight: 900; margin-bottom: 12px; font-size: 14px; color: var(--yung-green); }
+        .input-group label { display: block; font-weight: 900; margin-bottom: 8px; font-size: 14px; color: var(--yung-green); }
+        .input-row { display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #eee; }
         input, select { 
-            width: 100%; padding: 15px 0; border: none; border-bottom: 2px solid #d2d2d7;
-            font-size: 22px; background: transparent; color: var(--pure-black); font-weight: 800;
+            width: 100%; padding: 12px 0; border: none; font-size: 18px; 
+            background: transparent; color: var(--pure-black); font-weight: 800; outline: none;
         }
+        select { cursor: pointer; min-width: 75px; } /* 💡 確保寬度不吃字 */
 
-        /* 🍎 究極 A4 藝術容器：物理水晶底圖 (image_8ee997) */
+        /* 🍎 輸出容器 - 💡 黃金比例字體 */
         #output-container {
-            width: 850px; 
-            background: white; 
-            padding: 90px 80px; box-sizing: border-box;
+            width: 850px; background: white;
+            padding: 80px 75px; box-sizing: border-box;
             display: flex; flex-direction: column; position: relative;
-            box-shadow: 0 60px 150px rgba(0,0,0,0.1); margin-bottom: 60px;
-            border-radius: 2px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1); margin-bottom: 60px;
         }
 
-        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; border-bottom: 4px solid var(--yung-gold); padding-bottom: 25px; }
-        .brand-logo-img { height: 95px; }
-        .report-title { color: var(--pure-black); font-size: 42px; font-weight: 1000; margin: 0; line-height: 1.1; letter-spacing: -2px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; border-bottom: 3.5px solid var(--yung-gold); padding-bottom: 20px; }
+        .brand-logo-img { height: 80px; }
+        .report-title { color: var(--pure-black); font-size: 36px; font-weight: 1000; margin: 0; letter-spacing: -1.5px; }
 
-        /* 摘要面板 */
         .summary-panel {
-            background: rgba(253, 185, 19, 0.03); border-radius: 28px; border: 2px solid var(--yung-gold);
-            padding: 40px; margin-bottom: 55px;
+            background: rgba(253, 185, 19, 0.03); border-radius: 20px; border: 2px solid var(--yung-gold);
+            padding: 30px; margin-bottom: 45px;
         }
-        .summary-title { font-size: 26px; font-weight: 1000; color: var(--yung-green); margin-bottom: 15px; display: block; }
-        .summary-line { font-size: 24px; color: #111; font-weight: 700; line-height: 2.3; }
-        .summary-line b { color: var(--pure-black); font-size: 28px; font-weight: 1000; border-bottom: 4px solid var(--yung-gold); }
+        .summary-line { font-size: 19px; color: #333; font-weight: 700; line-height: 2; }
+        .summary-line b { color: var(--pure-black); font-size: 22px; font-weight: 1000; }
 
-        /* 💡 提示列 (image_8e7d5a) */
         .hint-bar {
-            background: #fffdf2; border-radius: 100px;
-            padding: 20px 40px; margin-bottom: 65px;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            font-size: 18px; font-weight: 900; color: var(--navy-blue);
-            border: 2px solid rgba(253, 185, 19, 0.3);
+            background: #fffdf0; border-radius: 100px; padding: 14px 35px; margin-bottom: 50px;
+            display: flex; align-items: center; justify-content: center; font-size: 16px; 
+            font-weight: 850; color: var(--navy-blue); border: 1.5px solid rgba(253, 185, 19, 0.3);
         }
 
-        /* 表格區：尊榮長者字體設計 */
+        /* 表格區 - 💡 調整字體大小與間距，消除壓迫感 */
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { font-size: 18px; color: #000; font-weight: 1000; padding: 25px 0; text-align: center; border-bottom: 5px solid var(--yung-gold); }
-        .th-note { font-size: 12px; color: #666; font-weight: 800; display: block; margin-top: 6px; }
+        th { font-size: 16px; color: #000; font-weight: 950; padding: 18px 0; text-align: center; border-bottom: 4px solid var(--yung-gold); }
+        .th-note { font-size: 11px; color: #666; font-weight: 700; display: block; margin-top: 4px; }
         
-        td { padding: 50px 0; text-align: center; vertical-align: middle; border-bottom: 1.5px solid #f0f0f0; }
+        td { padding: 35px 0; text-align: center; vertical-align: middle; border-bottom: 1.5px solid #f0f0f0; }
         
-        .col-price { font-size: 42px; color: var(--navy-blue); font-weight: 1000; letter-spacing: -1.5px; }
-        .col-main-data { font-size: 32px; color: var(--pure-black); font-weight: 900; }
-        .col-net { font-size: 64px; color: var(--apple-red); font-weight: 1000; letter-spacing: -3px; }
-        .data-note { font-size: 14px; color: #555; font-weight: 800; display: block; margin-top: 12px; white-space: nowrap; }
+        .col-price { font-size: 30px; color: var(--navy-blue); font-weight: 1000; }
+        .col-main-data { font-size: 24px; color: var(--pure-black); font-weight: 900; }
+        .col-net { font-size: 40px; color: var(--apple-red); font-weight: 1000; letter-spacing: -1.5px; } /* 💡 舒適的大尺寸 */
+        .data-note { font-size: 12px; color: #555; font-weight: 800; display: block; margin-top: 6px; white-space: nowrap; }
 
-        /* 頁腳 */
-        .footer { margin-top: 85px; padding-top: 50px; border-top: 5px solid #000; display: flex; justify-content: space-between; align-items: flex-end; }
-        .footer-left strong { font-size: 32px; color: var(--pure-black); display: block; margin-bottom: 12px; font-weight: 1000; }
-        .footer-left span { font-size: 22px; color: #444; font-weight: 800; }
-        .footer-right { text-align: right; color: #666; font-size: 16px; font-weight: 700; line-height: 2.3; }
+        .footer { margin-top: 70px; padding-top: 40px; border-top: 4px solid #000; display: flex; justify-content: space-between; align-items: flex-end; }
+        .footer-left strong { font-size: 26px; color: #000; display: block; margin-bottom: 10px; font-weight: 1000; }
+        .footer-right { text-align: right; color: #666; font-size: 14px; font-weight: 700; line-height: 2; }
 
-        /* 💡 究極浮水印鎖定 (您指定的 logo浮水印.png) */
-        .watermark { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 85%; opacity: 0.06; pointer-events: none; z-index: 0; }
+        .watermark { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 80%; opacity: 0.05; pointer-events: none; z-index: 0; }
 
         @media (max-width: 850px) {
             .ui-controls { width: 95%; }
@@ -131,16 +111,21 @@
         <div class="input-group"><label>買方仲介費 (萬)</label><input type="number" id="buyAg" value="0" oninput="generateTable()"></div>
         <div class="input-group"><label>買入規費 (萬)</label><input type="number" id="buyFe" value="0" oninput="generateTable()"></div>
         <div class="input-group"><label>基準成交預估 (萬)</label><input type="number" id="basePrice" value="1500" oninput="generateTable()"></div>
+        
         <div class="input-group">
             <label>賣方服務費</label>
-            <div style="display:flex; gap:15px;">
-                <select id="feeType" onchange="generateTable()" style="flex:0.6;"><option value="percent">百分比 (%)</option><option value="fixed">固定額 (萬)</option></select>
-                <input type="number" id="agencyVal" value="4" oninput="generateTable()" style="flex:1.4;">
+            <div class="input-row">
+                <select id="feeType" onchange="generateTable()">
+                    <option value="percent">% (百分比)</option>
+                    <option value="fixed">萬 (固定額)</option>
+                </select>
+                <input type="number" id="agencyVal" value="4" oninput="generateTable()">
             </div>
         </div>
+
         <div class="input-group">
             <label>房地合一稅率</label>
-            <select id="taxRate" onchange="generateTable()">
+            <select id="taxRate" onchange="generateTable()" style="border-bottom: 2px solid #eee;">
                 <option value="45">45% (持有 2 年內)</option>
                 <option value="35">35% (持有 2-5 年)</option>
                 <option value="20" selected>20% (持有超過 5 年)</option>
@@ -153,14 +138,12 @@
 
 <div id="output-container">
     <img src="logo浮水印.png" class="watermark" alt="浮水印" onerror="this.style.display='none'">
-    
     <div class="report-header">
         <img src="logo.png" class="brand-logo-img" alt="LOGO">
-        <h1 class="report-title">成屋獲利<br>對照報告</h1>
+        <h1 class="report-title">成屋獲利對照報告</h1>
     </div>
 
     <div class="summary-panel">
-        <span class="summary-title">報告設定條件：</span>
         <div class="summary-line" id="sumLine1">取得：買入 <b>886</b> | 裝潢 <b>0</b> | 買仲 <b>0</b> | 規費 <b>0</b></div>
         <div class="summary-line" id="sumLine2">稅務：稅率 <b>20%</b> | 賣仲費 <b>4%</b> | 賣出規費 <b>0</b></div>
     </div>
@@ -187,7 +170,7 @@
     <div class="footer">
         <div class="footer-left">
             <strong>永義房屋斗六成功莊敬加盟店</strong>
-            <span>雲林縣斗六市成功二街126號</span>
+            <span style="font-size: 17px; color: #555; font-weight: 700;">雲林縣斗六市成功二街126號</span>
         </div>
         <div class="footer-right">
             製表日期：<span id="dateDisplay"></span><br>
@@ -248,7 +231,7 @@
     async function captureAndProcess() {
         const target = document.getElementById('output-container');
         const canvas = await html2canvas(target, { 
-            scale: 4, 
+            scale: 3, 
             useCORS: true, 
             backgroundColor: null, 
             width: 850,
@@ -256,14 +239,9 @@
             onclone: (clonedDoc) => {
                 const el = clonedDoc.getElementById('output-container');
                 el.style.transform = 'none'; el.style.margin = '0';
-                // 💡 存圖：物理水晶底圖注入，去黃增透，保留高冷 Apple 感
-                el.style.background = "linear-gradient(165deg, #ffffff 0%, #f7f9ff 100%)";
+                // 💡 存圖：回歸清透感，避免太黃
+                el.style.background = "linear-gradient(165deg, #ffffff 0%, #fcfcf4 100%)";
                 el.style.borderRadius = "0";
-
-                // 💡 在存圖時強迫維持巨型字體不縮放
-                el.querySelectorAll('.col-price').forEach(i => i.style.fontSize = '48px');
-                el.querySelectorAll('.col-net').forEach(i => i.style.fontSize = '72px');
-                el.querySelectorAll('.col-main-data').forEach(i => i.style.fontSize = '36px');
             }
         });
         return canvas;
@@ -272,16 +250,16 @@
     async function handleMobileShare() {
         const canvas = await captureAndProcess();
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], '永義房屋究極資產報告.png', { type: 'image/png' });
+            const file = new File([blob], '永義房屋專業報告.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({ files: [file], title: '資產報告' });
+                await navigator.share({ files: [file], title: '獲利試算' });
             }
         });
     }
 
     async function handlePCDownload() {
         const canvas = await captureAndProcess();
-        const a = document.createElement('a'); a.href = canvas.toDataURL(); a.download = '永義房屋究極報告.png'; a.click();
+        const a = document.createElement('a'); a.href = canvas.toDataURL(); a.download = '永義房屋報告.png'; a.click();
     }
     window.onload = generateTable;
 </script>
