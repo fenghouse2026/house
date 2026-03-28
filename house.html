@@ -17,27 +17,29 @@
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             background: #f4f7f6; color: var(--text-main);
             padding: 0; margin: 0 auto;
-            width: 1050px; /* 鎖定總寬度 */
+            width: 1050px; 
         }
 
-        .app-container { width: 960px; margin: 30px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .app-container { width: 960px; margin: 30px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
         
+        /* 按鈕區 */
         .btn-group { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
-        button { border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 250px; }
+        button { border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; width: 280px; transition: 0.3s; }
         .btn-calc { background: var(--yung-green); color: white; }
         .btn-save { background: var(--yung-red); color: white; }
+        .btn-back { background: #666; color: white; display: none; margin: 20px auto; }
 
         .report-branding { text-align: center; margin-bottom: 30px; }
         .brand-logo-img { height: 80px; margin-bottom: 10px; }
         .report-main-title { color: #1e3a8a; font-size: 36px; font-weight: bold; margin: 0; letter-spacing: 3px; }
 
-        /* 🔥 上方填寫區：強制一格一行，方便同事填寫 🔥 */
+        /* 輸入區：強制一格一行 */
         .section-title { font-size: 20px; font-weight: bold; color: var(--yung-green); margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
         .input-item { display: block; width: 100%; margin-bottom: 20px; }
         .input-item label { display: block; font-size: 16px; font-weight: bold; margin-bottom: 8px; color: #666; }
         input, select { padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 20px; width: 100%; box-sizing: border-box; outline: none; }
 
-        /* 💡 報表區：一目瞭然 💡 */
+        /* 報表區域 */
         .report-area { position: relative; margin-top: 30px; }
         .watermark-overlay {
             position: absolute; top: 120px; left: 0; width: 100%; height: calc(100% - 120px);
@@ -56,23 +58,43 @@
         .col-price { color: #1e3a8a; font-size: 28px; }
         .col-net { color: var(--yung-red); font-size: 28px; }
         
+        /* 摘要區 */
         #exportSummary { display: none; background: #f8fafc; padding: 25px; border-radius: 10px; margin-bottom: 25px; font-size: 20px; line-height: 1.8; border: 1px solid #e2e8f0; }
 
         .footer-info { margin-top: 50px; padding-top: 25px; border-top: 2px solid #e2e8f0; display: flex; justify-content: space-between; font-size: 16px; color: #666; }
         .footer-left strong { font-size: 20px; color: #1e3a8a; display: block; margin-bottom: 8px; }
 
-        /* 儲存模式 */
-        .exporting .btn-group, .exporting .control-panel { display: none; }
-        .exporting #exportSummary { display: block; }
-        .exporting .app-container { box-shadow: none; padding: 40px; }
+        /* 提示視窗樣式 */
+        #alertModal {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; border-radius: 15px; box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            z-index: 9999; padding: 30px; width: 500px; text-align: center;
+        }
+        #alertModal h2 { color: var(--yung-red); margin-top: 0; }
+        #alertModal p { font-size: 18px; line-height: 1.6; color: #333; }
+        #alertModal button { background: var(--yung-green); color: white; width: 100%; margin-top: 20px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998; }
+
+        /* 📸 截圖模式切換樣式 */
+        .screenshot-mode .control-panel, .screenshot-mode .btn-group { display: none; }
+        .screenshot-mode #exportSummary { display: block; }
+        .screenshot-mode .app-container { box-shadow: none; border: 1px solid #eee; }
+        .screenshot-mode .btn-back { display: block; }
     </style>
 </head>
-<body>
+<body id="mainBody">
+
+<div class="modal-overlay" id="overlay"></div>
+<div id="alertModal">
+    <h2>📸 報表已生成！</h2>
+    <p>按鈕已自動隱藏，請直接使用手機<br><strong>「電源鍵 + 音量鍵」</strong>進行截圖。<br><br>截圖完成後，點擊下方按鈕即可返回修改數據。</p>
+    <button onclick="closeModal()">我知道了 (返回修改)</button>
+</div>
 
 <div class="app-container" id="capture-area">
     <div class="btn-group">
-        <button class="btn-calc" onclick="generateTable()">📊 重新計算</button>
-        <button class="btn-save" onclick="saveAsImage()">📸 儲存報表</button>
+        <button class="btn-calc" onclick="generateTable()">📊 重新計算數據</button>
+        <button class="btn-save" onclick="enterScreenshotMode()">📸 生成截圖版面</button>
     </div>
 
     <div class="report-branding">
@@ -146,6 +168,8 @@
             <strong>免責聲明：實際稅額以國稅局核定為準。</strong>
         </div>
     </div>
+    
+    <button class="btn-back" onclick="closeModal()">⬅️ 返回修改數據</button>
 </div>
 
 <script>
@@ -168,8 +192,8 @@
 
         document.getElementById('exportSummary').innerHTML = `
             <strong>報告設定條件：</strong><br>
-            取得成本：買入 ${cost} 萬 | 裝潢 ${reno} 萬 | 買方仲介費 ${bAgency} 萬 | 買入規費 ${bOther} 萬<br>
-            稅務設定：稅率 ${taxRateVal}% | 賣方仲介費 ${agencyRate}${agencyType==='percent'?'%':'萬'} | 賣出規費 ${sOther} 萬
+            取得成本：買入 <strong>${cost}</strong> 萬 | 裝潢 <strong>${reno}</strong> 萬 | 買方仲介費 <strong>${bAgency}</strong> 萬 | 買入規費 <strong>${bOther}</strong> 萬<br>
+            稅務設定：稅率 <strong>${taxRateVal}%</strong> | 賣方仲介費 <strong>${agencyRate}${agencyType==='percent'?'%':'萬'}</strong> | 賣出規費 <strong>${sOther}</strong> 萬
         `;
 
         const tbody = document.getElementById('resultBody');
@@ -198,20 +222,23 @@
         }
     }
 
-    function saveAsImage() {
+    function enterScreenshotMode() {
         generateTable();
-        const area = document.getElementById('capture-area');
-        area.classList.add('exporting');
-        setTimeout(() => {
-            html2canvas(area, { scale: 2, backgroundColor: "#ffffff", useCORS: true }).then(canvas => {
-                let link = document.createElement('a');
-                link.download = `獲利報告.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-                area.classList.remove('exporting');
-            });
-        }, 600);
+        // 進入截圖模式：隱藏控制項，顯示摘要
+        document.getElementById('mainBody').classList.add('screenshot-mode');
+        // 彈出提示
+        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('alertModal').style.display = 'block';
+        // 自動捲動到最頂部，確保截圖完整
+        window.scrollTo(0, 0);
     }
+
+    function closeModal() {
+        document.getElementById('mainBody').classList.remove('screenshot-mode');
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('alertModal').style.display = 'none';
+    }
+
     window.onload = generateTable;
 </script>
 </body>
