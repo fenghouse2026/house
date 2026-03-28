@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1050">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>成屋獲利對照報告 - 永義房屋斗六成功莊敬加盟店</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -14,86 +14,76 @@
             --border-color: #cccccc;
         }
 
-        /* 強制維持大寬度，防止手機變形 */
         body {
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             background: #f4f7f6; color: var(--text-main);
-            margin: 0 auto; padding: 20px 0;
-            width: 1050px; box-sizing: border-box;
+            padding: 15px; margin: 0;
         }
 
-        .app-container { 
-            width: 960px; margin: 0 auto; background: #fff; padding: 35px 45px; 
-            border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-        }
+        .app-container { max-width: 960px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
         .btn-group { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
         button {
-            border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer;
-            font-size: 16px; font-weight: bold; transition: opacity 0.2s;
+            border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer;
+            font-size: 16px; font-weight: bold; transition: opacity 0.2s; flex: 1; max-width: 200px;
         }
         .btn-calc { background: var(--yung-green); color: white; }
         .btn-save { background: var(--yung-red); color: white; }
 
         .report-branding { text-align: center; margin-bottom: 30px; }
-        .brand-logo-img { height: 70px; margin-bottom: 10px; }
-        .report-main-title { color: #1e3a8a; font-size: 32px; font-weight: bold; margin: 0; letter-spacing: 2px; }
+        .brand-logo-img { height: 65px; margin-bottom: 10px; }
+        .report-main-title { color: #1e3a8a; font-size: 28px; font-weight: bold; margin: 0; letter-spacing: 2px; }
 
-        /* 回歸舊版乾淨設定區 */
-        .section-title { font-size: 15px; font-weight: bold; color: var(--yung-green); margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
-        
-        /* 💡 預設電腦兩欄，手機會透過 media query 變直向一欄 💡 */
-        .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 25px; align-items: flex-end; }
+        /* 輸入區：電腦版兩欄 */
+        .section-title { font-size: 16px; font-weight: bold; color: var(--yung-green); margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; }
+        .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
         .input-group { display: flex; flex-direction: column; }
-        .input-group label { font-size: 13px; color: var(--text-sub); margin-bottom: 8px; font-weight: bold; }
+        .input-group label { font-size: 13px; color: var(--text-sub); margin-bottom: 5px; font-weight: bold; }
         input, select {
-            padding: 8px 10px; border: none; border-bottom: 2px solid var(--border-color); border-radius: 0;
-            font-size: 18px; font-weight: bold; width: 100%; outline: none; background: transparent;
+            padding: 10px; border: 1px solid var(--border-color); border-radius: 6px;
+            font-size: 16px; width: 100%; box-sizing: border-box; outline: none;
         }
 
-        /* 💡 浮水印容器與表格設計 💡 */
-        .table-container { position: relative; width: 100%; margin-top: 10px; }
+        /* 表格容器：手機版左右滑動 */
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; position: relative; }
         
-        /* 🔥 大氣 Logo 浮水印 (單一居中，深度 0.2) 🔥 */
-        .watermark-overlay {
-            position: absolute; top: 100px; left: 0; width: 100%; height: calc(100% - 100px);
-            pointer-events: none; z-index: 1; 
-            opacity: 0.2; /* 🔥 您要求的深度 🔥 */
-            background-image: url('logo浮水印.png');
-            background-repeat: no-repeat; 
-            background-position: center center; 
-            background-size: 450px auto; 
+        /* 💡 浮水印設定：單一、中央、0.2 深度 💡 */
+        .watermark-layer {
+            position: absolute; top: 80px; left: 0; width: 100%; height: calc(100% - 80px);
+            pointer-events: none; z-index: 1; opacity: 0.2;
+            background-image: url('logo浮水印.png'); background-repeat: no-repeat; 
+            background-position: center center; background-size: 400px;
         }
 
-        table { width: 100%; border-collapse: collapse; position: relative; z-index: 2; table-layout: fixed; }
-        th, td { padding: 15px 5px; text-align: center; border-bottom: 1px solid #e2e8f0; }
-        th { color: #475569; font-size: 16px; vertical-align: top; white-space: nowrap; }
-        .th-note { display: block; font-size: 12px; color: #94a3b8; font-weight: normal; margin-top: 6px; line-height: 1.4; white-space: nowrap; }
+        table { width: 100%; min-width: 900px; border-collapse: collapse; position: relative; z-index: 2; background: transparent; }
+        th, td { padding: 15px 8px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+        th { color: #475569; font-size: 15px; vertical-align: top; background: #fff; white-space: nowrap; }
+        .th-note { display: block; font-size: 12px; color: #94a3b8; font-weight: normal; margin-top: 5px; line-height: 1.4; white-space: nowrap; }
+        td { font-size: 18px; font-weight: bold; color: #1e293b; background: rgba(255,255,255,0.7); white-space: nowrap; }
         
-        td { font-size: 22px; font-weight: bold; color: #1e293b; background: rgba(255,255,255,0.7); white-space: nowrap; }
+        .highlight-row { background-color: rgba(255, 251, 235, 0.9) !important; }
+        .col-price { color: #1e3a8a; font-size: 22px; }
+        .col-net { color: var(--yung-red); font-size: 22px; }
         
-        .highlight-row td { background-color: rgba(255, 251, 235, 0.8) !important; }
-        .col-price { color: #1e3a8a; font-size: 26px; }
-        .col-net { color: var(--yung-red); font-size: 26px; }
-        
-        /* 匯出摘要 */
-        #exportSummary { display: none; background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px; font-size: 18px; line-height: 1.8; border: 1px solid #e2e8f0; }
+        #exportSummary { display: none; background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px; font-size: 16px; line-height: 1.8; border: 1px solid #e2e8f0; }
 
-        /* 回歸舊版頁尾 */
-        .footer-info { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0; display: flex; justify-content: space-between; font-size: 14px; color: var(--text-sub); white-space: nowrap; }
-        .footer-left strong { font-size: 18px; color: #1e293b; display: block; margin-bottom: 5px; }
+        .footer-info { margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0; display: flex; justify-content: space-between; font-size: 14px; color: var(--text-sub); }
+        .footer-left strong { font-size: 17px; color: #1e293b; display: block; margin-bottom: 5px; }
 
-        .exporting .btn-group, .exporting .control-panel { display: none; }
+        /* 🔥 手機版：直式填寫設定 🔥 */
+        @media (max-width: 768px) {
+            .input-grid { grid-template-columns: 1fr; gap: 20px; }
+            input, select { font-size: 20px; padding: 12px; } /* 適合老花的大格子 */
+            .btn-group { flex-direction: column; }
+            button { max-width: 100%; width: 100%; }
+            .footer-info { flex-direction: column; gap: 10px; }
+        }
+
+        /* 儲存圖片時的強制格式 */
+        .exporting .control-panel { display: none; }
         .exporting #exportSummary { display: block; }
-        .exporting .app-container { box-shadow: none; padding: 40px; }
-
-        /* 🔥 手機直向填寫優化 (符合 591 順手感) 🔥 */
-        @media (max-width: 600px) {
-            .input-grid { 
-                grid-template-columns: 1fr !important; /* 強制直向一欄 */
-            }
-            input, select { font-size: 22px; padding: 12px 5px; } /* 適合手指點擊與閱讀 */
-        }
+        .exporting .app-container { width: 1050px; max-width: none; box-shadow: none; padding: 40px; }
+        .exporting body { width: 1050px; }
     </style>
 </head>
 <body>
@@ -130,8 +120,8 @@
             </div>
             <div class="input-group">
                 <label>賣方服務費</label>
-                <div style="display: flex; gap: 8px;">
-                    <select id="agencyFeeType" style="width: 80px;"><option value="percent">%</option><option value="fixed">萬</option></select>
+                <div style="display: flex; gap: 5px;">
+                    <select id="agencyFeeType" style="width: 70px;"><option value="percent">%</option><option value="fixed">萬</option></select>
                     <input type="number" id="agencyRate" value="4" style="flex: 1;">
                 </div>
             </div>
@@ -155,17 +145,17 @@
 
     <div id="exportSummary"></div>
 
-    <div class="table-container">
-        <div class="watermark-overlay"></div>
+    <div class="table-responsive">
+        <div class="watermark-layer"></div>
         <table>
             <thead>
                 <tr>
                     <th style="width:15%;">成交價(萬)</th>
                     <th style="width:17%;">實付費用(萬)<span class="th-note">(仲介費+規費)</span></th>
-                    <th style="width:20%;">抵扣費用(萬)<span class="th-note">(擇優:仲介費或最高30萬)</span></th>
-                    <th style="width:16%;">課稅所得(萬)<span class="th-note">(賣價-總成本-抵扣)</span></th>
-                    <th style="width:16%;">房地合一稅(萬)<span class="th-note">(所得 × 稅率 = 稅金)</span></th>
-                    <th style="width:16%;">淨獲利(萬)<span class="th-note">(賣價-總成本-實付-稅)</span></th>
+                    <th style="width:19%;">抵扣費用(萬)<span class="th-note">(擇優:仲介費或最高30萬)</span></th>
+                    <th style="width:17%;">課稅所得(萬)<span class="th-note">(賣價-總成本-抵扣)</span></th>
+                    <th style="width:17%;">房地合一稅(萬)<span class="th-note">(所得 × 稅率 = 稅金)</span></th>
+                    <th style="width:15%;">淨獲利(萬)<span class="th-note">(賣價-總成本-實付-稅)</span></th>
                 </tr>
             </thead>
             <tbody id="resultBody"></tbody>
@@ -179,19 +169,19 @@
         </div>
         <div class="footer-right">
             製表時間：<span id="dateDisplay"></span><br>
-            <strong>免責聲明：實際稅額以國稅局核定為準，計算錯誤時不負擔任何責任。</strong>
+            免責聲明：實際稅額以國稅局核定為準，不負擔擔法律責任。
         </div>
     </div>
 </div>
 
 <script>
     function generateTable() {
-        const costVal = parseFloat(document.getElementById('costPrice').value) || 0;
+        const cost = parseFloat(document.getElementById('costPrice').value) || 0;
         const reno = parseFloat(document.getElementById('renovationCost').value) || 0;
         const bAgency = parseFloat(document.getElementById('buyAgencyFee').value) || 0;
         const bOther = parseFloat(document.getElementById('buyOtherFees').value) || 0;
-        const taxRateVal = document.getElementById('taxRate').value;
-        const taxRate = parseFloat(taxRateVal) / 100;
+        const taxVal = document.getElementById('taxRate').value;
+        const taxRate = parseFloat(taxVal) / 100;
         const agencyType = document.getElementById('agencyFeeType').value;
         const agencyRate = parseFloat(document.getElementById('agencyRate').value) || 0;
         const sOther = parseFloat(document.getElementById('otherSellingFees').value) || 0;
@@ -199,13 +189,13 @@
         const step = parseFloat(document.getElementById('stepValue').value) || 10;
         const rows = parseInt(document.getElementById('rowCount').value) || 6;
 
-        const totalAcquisition = costVal + reno + bAgency + bOther;
+        const totalAcq = cost + reno + bAgency + bOther;
         document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString();
 
         document.getElementById('exportSummary').innerHTML = `
-            <strong style="color:var(--yung-green); font-size:22px;">報告設定條件：</strong><br>
-            取得成本：買入 ${costVal} | 裝潢 ${reno} | 買仲費 ${bAgency} | 規費 ${bOther} (總: ${totalAcquisition.toFixed(1)})<br>
-            稅務：稅率 ${taxRateVal}% | 賣仲費 ${agencyRate}${agencyType==='percent'?'%':'萬'} | 規費 ${sOther}
+            <strong>報告設定條件：</strong><br>
+            取得：買入 ${cost} | 裝潢 ${reno} | 買仲費 ${bAgency} | 規費 ${bOther} (總: ${totalAcq.toFixed(1)})<br>
+            稅務：稅率 ${taxVal}% | 賣仲費 ${agencyRate}${agencyType==='percent'?'%':'萬'} | 規費 ${sOther}
         `;
 
         const tbody = document.getElementById('resultBody');
@@ -215,17 +205,17 @@
             let sellAgency = (agencyType === 'percent') ? (price * agencyRate / 100) : agencyRate;
             let actualSellExp = sellAgency + sOther;
             let deducExp = Math.max(actualSellExp, Math.min(price * 0.03, 30));
-            let taxBase = Math.max(0, price - totalAcquisition - deducExp);
-            if (taxRateVal === '10') taxBase = Math.max(0, taxBase - 400);
+            let taxBase = Math.max(0, price - totalAcq - deducExp);
+            if (taxVal === '10') taxBase = Math.max(0, taxBase - 400);
             let tax = taxBase * taxRate;
-            let net = price - totalAcquisition - actualSellExp - tax;
+            let net = price - totalAcq - actualSellExp - tax;
 
             let tr = document.createElement('tr');
             if(i===0) tr.className='highlight-row';
             tr.innerHTML = `
                 <td class="col-price">${price}</td>
                 <td>${actualSellExp.toFixed(1)}</td>
-                <td>${deducExp.toFixed(1)}<br><span style="font-size:12px; color:#008C4A; font-weight:bold;">${actualSellExp >= Math.min(price * 0.03, 30) ? '[採仲介費]' : '[採免稅額]'}</span></td>
+                <td>${deducExp.toFixed(1)}<br><span style="font-size:12px; color:#008C4A;">${actualSellExp >= Math.min(price * 0.03, 30) ? '[採仲介費]' : '[採免稅額]'}</span></td>
                 <td>${taxBase.toFixed(1)}</td>
                 <td>${tax.toFixed(1)}</td>
                 <td class="col-net">${net.toFixed(1)}</td>
@@ -246,7 +236,7 @@
                 link.click();
                 area.classList.remove('exporting');
             });
-        }, 600);
+        }, 500);
     }
     window.onload = generateTable;
 </script>
