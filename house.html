@@ -88,24 +88,34 @@
             .top-tip { font-size: 13px; }
         }
 
+        /* 頁腳區域：優化不跳行 */
+        .footer-info { 
+            margin-top: 25px; 
+            padding-top: 15px; 
+            border-top: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            color: #7f8c8d; 
+            font-size: 13px;
+        }
+        .footer-left { flex: 1; }
+        .footer-left strong { font-size: 18px; color: #2c3e50; display: block; margin-bottom: 2px; }
+        .footer-right { text-align: right; flex-shrink: 0; }
+        .disclaimer { font-size: 12px; color: #bdc3c7; margin-top: 4px; }
+
+        @media (max-width: 768px) {
+            .footer-info { display: block; }
+            .footer-right { text-align: left; margin-top: 10px; }
+        }
+
         .exporting { width: 1050px !important; }
         .exporting .control-panel, .exporting .btn-group { display: none; }
         .exporting th { font-size: 18px !important; }
         .exporting td { font-size: 24px !important; }
         .exporting .watermark { opacity: 0.12; width: 450px; }
-        #exportSummary { display: none; margin-bottom: 15px; font-size: 20px; padding: 15px; border-left: 6px solid var(--yung-green); background: #f9f9f9; }
+        #exportSummary { display: none; margin-bottom: 15px; font-size: 18px; padding: 15px; border-left: 6px solid var(--yung-green); background: #f9f9f9; }
         .exporting #exportSummary { display: block; }
-
-        /* 頁腳區域 */
-        .footer-info { margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: flex-end; color: #7f8c8d; font-size: 14px; line-height: 1.6; }
-        .footer-left strong { font-size: 18px; color: #2c3e50; display: block; margin-bottom: 2px; }
-        .footer-right { text-align: right; }
-        .disclaimer { font-size: 12px; color: #bdc3c7; margin-top: 4px; }
-
-        @media (max-width: 768px) {
-            .footer-info { flex-direction: column; align-items: flex-start; gap: 10px; }
-            .footer-right { text-align: left; }
-        }
 
         #toast { visibility: hidden; min-width: 200px; background: var(--yung-green); color: white; text-align: center; border-radius: 50px; padding: 12px; position: fixed; left: 50%; transform: translateX(-50%); bottom: 30px; z-index: 1000; }
         #toast.show { visibility: visible; }
@@ -128,10 +138,10 @@
 
     <div class="control-panel">
         <div class="input-grid">
-            <div class="input-group"><label>買入總價 (萬)</label><input type="number" id="costPrice" value="1000" oninput="generateTable()"></div>
+            <div class="input-group"><label>買入總價</label><input type="number" id="costPrice" value="1000" oninput="generateTable()"></div>
             <div class="input-group"><label>可列舉裝潢成本 (需有發票)</label><input type="number" id="renoCost" value="0" oninput="generateTable()"></div>
-            <div class="input-group"><label>買入時仲介費 (萬)</label><input type="number" id="buyAgencyFee" value="0" oninput="generateTable()"></div>
-            <div class="input-group"><label>買入代書費/規費 (萬)</label><input type="number" id="buyOtherFees" value="0" oninput="generateTable()"></div>
+            <div class="input-group"><label>買入時仲介費</label><input type="number" id="buyAgencyFee" value="0" oninput="generateTable()"></div>
+            <div class="input-group"><label>買入代書費/規費</label><input type="number" id="buyOtherFees" value="0" oninput="generateTable()"></div>
         </div>
 
         <div class="input-grid" style="border-top: 1px dashed #ddd; margin-top: 15px; padding-top: 15px;">
@@ -155,7 +165,7 @@
         </div>
 
         <div class="step-panel">
-            <div class="input-group"><label>基準成交價 (萬)</label><input type="number" id="basePrice" value="1500" oninput="generateTable()"></div>
+            <div class="input-group"><label>基準成交價</label><input type="number" id="basePrice" value="1500" oninput="generateTable()"></div>
             <div class="input-group">
                 <label>級距單位</label>
                 <select id="stepValue" onchange="generateTable()">
@@ -176,11 +186,11 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width:20%">成交價(萬)</th>
-                    <th style="width:18%">實付費用(萬)<span class="th-note">(仲介費+規費)</span></th>
-                    <th style="width:22%">抵扣費用(萬)<span class="th-note">(系統自動擇優)</span></th>
-                    <th style="width:20%">房地稅額(萬)<span class="th-note">(所得 × 稅率)</span></th>
-                    <th style="width:20%">最終淨獲利(萬)<span class="th-note">(賣價-成本-稅費)</span></th>
+                    <th style="width:20%">成交價</th>
+                    <th style="width:18%">實付費用<span class="th-note">(仲介費+規費)</span></th>
+                    <th style="width:22%">抵扣費用<span class="th-note">(系統自動擇優)</span></th>
+                    <th style="width:20%">房地稅額<span class="th-note">(所得 × 稅率)</span></th>
+                    <th style="width:20%">最終淨獲利<span class="th-note">(賣價-成本-稅費)</span></th>
                 </tr>
             </thead>
             <tbody id="resultBody"></tbody>
@@ -193,8 +203,8 @@
             承峰不動產仲介有限公司 | 雲林縣斗六市成功二街126號
         </div>
         <div class="footer-right">
-            製表時間：<span id="dateDisplay"></span>
-            <div class="disclaimer">免責聲明：實際稅額以國稅局核定為準，計算錯誤時不負擔任何責任。</div>
+            製表時間：<span id="dateDisplay"></span><br>
+            <span class="disclaimer">免責聲明：實際稅額以國稅局核定為準，計算錯誤時不負責任。</span>
         </div>
     </div>
 </div>
@@ -219,7 +229,7 @@
         const rows = parseInt(document.getElementById('rowCount').value) || 6;
 
         document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString();
-        document.getElementById('exportSummary').innerHTML = `設定：取得成本 ${totalAcq.toFixed(1)} 萬 | 服務費 ${agencyVal}${feeType==='percent'?'%':'萬'} | 稅率 ${taxRateText}`;
+        document.getElementById('exportSummary').innerHTML = `設定：取得成本 ${totalAcq.toFixed(1)} | 服務費 ${agencyVal}${feeType==='percent'?'%':'萬'} | 稅率 ${taxRateText}`;
 
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
@@ -271,7 +281,7 @@
         app.classList.remove('exporting');
         btn.innerText = "📤 儲存報表圖檔";
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], '獲利報告.png', { type: 'image/png' });
+            const file = new File([blob], '報告.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({ files: [file], title: '獲利報告' });
             } else {
