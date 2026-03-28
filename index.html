@@ -277,7 +277,7 @@
     async function handleMobileShare() {
         const canvas = await captureAndProcess();
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], '永義房屋專業資產報告.png', { type: 'image/png' });
+            const file = new File([blob], '永義房屋稅金報告.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({ files: [file], title: '獲利試算報告' });
             }
