@@ -24,29 +24,10 @@
 
         .app-container { width: 960px; margin: 30px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
         
-        /* 🔥 暴力放大按鈕區 🔥 */
-        .btn-group { 
-            display: flex; 
-            flex-direction: column; /* 改為直向堆疊，每顆按鈕佔滿一行 */
-            gap: 20px; 
-            margin-bottom: 50px; 
-        }
-        .btn-group button { 
-            border: none; 
-            height: 120px; /* 超厚按鈕 */
-            border-radius: 20px; 
-            cursor: pointer; 
-            font-size: 38px; /* 巨無霸字體 */
-            font-weight: 900; 
-            width: 100%; /* 寬度全滿 */
-            transition: 0.3s; 
-            color: white; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* 巨大按鈕區 */
+        .btn-group { display: flex; flex-direction: column; gap: 20px; margin-bottom: 50px; }
+        .btn-group button { border: none; height: 120px; border-radius: 20px; cursor: pointer; font-size: 38px; font-weight: 900; width: 100%; transition: 0.3s; color: white; display: flex; align-items: center; justify-content: center; }
         .btn-group button:active { transform: scale(0.95); opacity: 0.8; }
-        
         .btn-calc { background: var(--yung-green); box-shadow: 0 10px 20px rgba(0, 140, 74, 0.3); }
         .btn-save { background: var(--yung-red); box-shadow: 0 10px 20px rgba(216, 42, 41, 0.4); }
         .btn-pc { background: var(--premium-blue); box-shadow: 0 10px 20px rgba(30, 58, 138, 0.4); }
@@ -64,17 +45,7 @@
         .input-group label { font-weight: 900; margin-bottom: 12px; font-size: 24px; color: #444; }
         .field-note { font-weight: normal; font-size: 18px; color: #888; }
         
-        input, select { 
-            padding: 16px 20px; 
-            border: 2px solid var(--border-color); 
-            border-radius: 8px; 
-            font-size: 30px; 
-            font-weight: bold;
-            color: #1e3a8a;
-            box-sizing: border-box; 
-            background-color: #fff; 
-            outline: none; 
-        }
+        input, select { padding: 16px 20px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 30px; font-weight: bold; color: #1e3a8a; box-sizing: border-box; background-color: #fff; outline: none; }
 
         /* 報表區 */
         .report-area { position: relative; margin-top: 10px; border-top: 8px solid #fdb913; padding-top: 30px; background-color: #ffffff; }
@@ -96,9 +67,7 @@
         .col-net { color: var(--yung-red); font-size: 28px; }
         
         #exportSummary { display: none; background: #f9f9f9; padding: 25px; border-radius: 6px; border-left: 6px solid var(--yung-green); margin-bottom: 25px; font-size: 24px; line-height: 1.8; }
-
         .footer-info { margin-top: 50px; padding-top: 25px; border-top: 1px dashed #ccc; display: flex; justify-content: space-between; font-size: 16px; color: #777; }
-        .footer-left strong { font-size: 20px; color: #1e3a8a; display: block; margin-bottom: 8px; }
 
         .exporting .control-panel, .exporting .btn-group { display: none; }
         .exporting #exportSummary { display: block; }
@@ -133,12 +102,14 @@
 
     <div class="control-panel">
         <h2>一、成屋專屬參數設定</h2>
+        
         <div class="input-grid">
             <div class="input-group"><label>買入總價 (萬元)</label><input type="number" id="costPrice" value="886"></div>
             <div class="input-group"><label>可列舉裝潢成本 (萬元)</label><input type="number" id="renovationCost" value="0"></div>
             <div class="input-group"><label>購買時仲介費 (萬元)</label><input type="number" id="buyAgencyFee" value="0"></div>
             <div class="input-group"><label>購買時代書費等規費 (萬元)</label><input type="number" id="buyOtherFees" value="0"></div>
         </div>
+
         <div class="input-grid" style="border-top: 2px dashed #ccc; padding-top: 30px; margin-top: 10px;">
             <div class="input-group">
                 <label>房地合一稅率 (%)</label>
@@ -150,10 +121,21 @@
                     <option value="10">10% (自用滿6年優惠)</option>
                 </select>
             </div>
-            <div class="input-group"><label>賣方仲介費 (%)</label><input type="number" id="agencyRate" value="4"></div>
             <div class="input-group"><label>賣方其他規費 (萬元)</label><input type="number" id="otherSellingFees" value="0"></div>
         </div>
-        <div class="input-grid" style="border-top: 2px dashed #ccc; padding-top: 30px; margin-top: 10px;">
+
+        <div class="input-grid" style="background: #f1f5f9; padding: 20px; border-radius: 12px; margin-top: -10px;">
+            <div class="input-group">
+                <label style="color:var(--yung-red);">賣方服務費 (%)</label>
+                <input type="number" id="agencyRate" value="4" placeholder="例如: 4">
+            </div>
+            <div class="input-group">
+                <label style="color:var(--yung-red);">或 固定服務費 (萬元)</label>
+                <input type="number" id="fixedAgencyFee" value="" placeholder="自由填寫">
+            </div>
+        </div>
+
+        <div class="input-grid" style="border-top: 2px dashed #ccc; padding-top: 30px; margin-top: 20px;">
             <div class="input-group"><label>基準成交價 (萬元)</label><input type="number" id="basePrice" value="1500"></div>
             <div class="input-group">
                 <label>級距單位 (萬元)</label>
@@ -214,7 +196,11 @@
         const buyOtherFees = parseFloat(document.getElementById('buyOtherFees').value) || 0;
         const taxRateVal = document.getElementById('taxRate').value;
         const taxRate = parseFloat(taxRateVal) / 100;
+        
+        // 💡 邏輯：優先抓固定金額，若沒填則抓 % 💡
+        const fixedFeeInput = document.getElementById('fixedAgencyFee').value;
         const agencyRate = parseFloat(document.getElementById('agencyRate').value) || 0;
+        
         const sOther = parseFloat(document.getElementById('otherSellingFees').value) || 0;
         const base = parseFloat(document.getElementById('basePrice').value) || 0;
         const step = parseFloat(document.getElementById('stepValue').value) || 10;
@@ -223,17 +209,22 @@
         const totalAcq = cost + reno + buyAgencyFee + buyOtherFees;
         document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString();
 
+        const feeDisplay = fixedFeeInput !== "" ? `${fixedFeeInput} 萬 (固定)` : `${agencyRate}%`;
+
         document.getElementById('exportSummary').innerHTML = `
             <strong>當前報告設定條件：</strong><br>
-            取得成本：買入 ${cost} 萬 | 裝潢 ${reno} 萬 | 買方費 ${buyAgencyFee} 萬 | 規費 ${buyOtherFees} 萬 (總: ${totalAcq.toFixed(1)})<br>
-            稅務設定：稅率 ${taxRateVal}% | 賣方仲介費 ${agencyRate}% | 賣出規費 ${sOther} 萬
+            取得成本：買入 ${cost} 萬 | 裝潢 ${reno} 萬 | 買方費 ${buyAgencyFee} 萬 (總成本: ${totalAcq.toFixed(1)})<br>
+            稅務設定：稅率 ${taxRateVal}% | 賣方仲介費 ${feeDisplay} | 賣出規費 ${sOther} 萬
         `;
 
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
         for(let i = 0; i >= -rows + 1; i--) {
             let price = base + (i * step);
-            let sellAgency = price * (agencyRate / 100);
+            
+            // 計算賣方仲介費
+            let sellAgency = fixedFeeInput !== "" ? parseFloat(fixedFeeInput) : price * (agencyRate / 100);
+            
             let actualSellExp = sellAgency + sOther;
             let deducExp = Math.max(actualSellExp, Math.min(price * 0.03, 30));
             let taxBase = price - totalAcq - deducExp;
