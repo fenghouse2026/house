@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>成屋獲利對照報告Pro - 永義房屋</title>
+    <title>成屋獲利對照報告Pro - 承峰不動產(永義房屋)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -28,10 +28,9 @@
             margin: auto;
         }
         
-        /* --- 按鈕區塊樣式調整 (適應放在上方) --- */
         .btn-group {
             text-align: center;
-            margin-bottom: 20px; /* 改為下方間距 */
+            margin-bottom: 20px; 
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
@@ -60,6 +59,20 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             border-top: 10px solid var(--yung-yellow); 
             position: relative; 
+            overflow: hidden; 
+        }
+
+        #full-report-area::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='350' height='300'%3E%3Ctext transform='rotate(-30 150 150)' x='10' y='150' fill='black' fill-opacity='0.015' font-size='16' font-family='Microsoft JhengHei'%3E承峰不動產仲介有限公司 版權所有 非本公司員工禁止使用。%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+            z-index: 10; 
+            pointer-events: none; 
         }
 
         .report-branding {
@@ -69,6 +82,7 @@
             margin-bottom: 25px; 
             padding-bottom: 15px;
             border-bottom: 2px solid var(--yung-red); 
+            position: relative; z-index: 20; 
         }
 
         .brand-logo-container {
@@ -91,16 +105,16 @@
         }
 
         .control-panel {
-            background: #fdfdfd;
+            background: rgba(253, 253, 253, 0.85); 
             padding: 20px;
             border-radius: 4px;
             border: 1px solid #eee;
             margin-bottom: 20px; 
+            position: relative; z-index: 20;
         }
 
-        /* 參數摘要：平時隱藏，列印或複製時很有用 */
         .print-summary {
-            background: #f9f9f9;
+            background: rgba(249, 249, 249, 0.9);
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 4px;
@@ -147,14 +161,30 @@
             font-size: 15px;
             box-sizing: border-box;
             background-color: #fff;
+            width: 100%; 
         }
         input:focus, select:focus {
             outline: none;
             border-color: var(--yung-green);
         }
         
+        .flex-row {
+            display: flex;
+            gap: 5px;
+            width: 100%;
+        }
+        .flex-row > select {
+            flex: 0 0 40%; 
+            min-width: 0;  
+        }
+        .flex-row > input {
+            flex: 1;       
+            min-width: 0;  
+        }
+
         .capture-area {
             margin-top: 10px;
+            position: relative; z-index: 20;
         }
         .report-header {
             text-align: center;
@@ -171,8 +201,17 @@
             color: #888;
             margin-bottom: 10px;
         }
+        
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; 
+            margin-bottom: 10px;
+        }
+
         table {
             width: 100%;
+            min-width: 650px; 
             border-collapse: collapse;
             text-align: center;
             font-size: 15px;
@@ -186,6 +225,20 @@
             font-weight: bold;
             border-bottom: 2px solid #a0aec0; 
             border-top: 2px solid #a0aec0;    
+        }
+        .col-formula {
+            display: block;
+            font-size: 11px;
+            color: #888;
+            font-weight: normal;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+        .dynamic-method {
+            display: block;
+            font-size: 11px;
+            color: #aaa;
+            margin-top: 2px;
         }
         table, th, td {
             border-left: none;
@@ -202,6 +255,8 @@
             justify-content: space-between;
             font-size: 12px;
             color: #777;
+            border-bottom: 1px dashed #ccc;
+            line-height: 1.6;
             border-top: 1px dashed #ccc;
         }
 
@@ -210,6 +265,9 @@
             #full-report-area {
                 padding: 15px;
                 border-top: 6px solid var(--yung-yellow); 
+            }
+            #full-report-area::before {
+                background-size: 300px 257px; 
             }
             .report-branding {
                 flex-direction: column;
@@ -220,8 +278,8 @@
             .brand-logo-img { height: 60px; }
             .report-main-title { font-size: 22px; text-align: center; }
             .control-panel { padding: 15px; }
-            table { font-size: 12px; }
-            th, td { padding: 8px 2px; }
+            table { font-size: 13px; } 
+            th, td { padding: 8px 4px; }
             .footer-info {
                 flex-direction: column;
                 text-align: center;
@@ -229,7 +287,6 @@
             }
             .footer-info div { text-align: center !important; }
             .btn-group button { width: 100%; }
-            .hide-on-mobile { display: none; }
         }
     </style>
 </head>
@@ -243,6 +300,7 @@
     </div>
 
     <div id="full-report-area">
+        
         <div class="report-branding">
             <div class="brand-logo-container">
                 <img src="logo.png" alt="品牌 LOGO" class="brand-logo-img" onerror="this.style.display='none'">
@@ -260,7 +318,7 @@
                 裝潢 <span id="s_reno">50</span> 萬 | 
                 土增稅 <span id="s_land">0</span> 萬 | 
                 稅率 <span id="s_tax">35</span>% | 
-                賣方仲介費 <span id="s_sellAgency">4</span>% | 
+                賣方仲介費 <span id="s_sellAgency">4</span> <span id="s_sellAgencyType">%</span> | 
                 賣方規費 <span id="s_sellOther">0</span> 萬
             </div>
 
@@ -298,10 +356,18 @@
                         <option value="10">10% (自用滿6年，扣400萬免稅額)</option>
                     </select>
                 </div>
+                
                 <div class="input-group">
-                    <label>賣方仲介費 (%)</label>
-                    <input type="number" id="agencyRate" value="4" step="0.1">
+                    <label>賣方仲介費</label>
+                    <div class="flex-row">
+                        <select id="agencyFeeType">
+                            <option value="percent">%</option>
+                            <option value="fixed">萬(定額)</option>
+                        </select>
+                        <input type="number" id="agencyRate" value="4" step="0.1">
+                    </div>
                 </div>
+                
                 <div class="input-group">
                     <label>賣方其他規費 (萬元) <span class="field-note">(備註代書費等)</span></label>
                     <input type="number" id="otherSellingFees" value="0" step="0.1">
@@ -333,31 +399,48 @@
         <div class="capture-area report-section">
             <div class="report-header">
                 <div class="brand-subtitle">(成屋專用) 稅務試算表</div>
-                <div class="system-hint">系統已自動為您擇優認列賣出費用 (實際費用 vs 3%最高30萬)</div>
+                <div class="system-hint">系統已自動為您擇優認列賣出費用</div>
             </div>
             
-            <table id="resultTable">
-                <thead>
-                    <tr>
-                        <th>成交價(萬)</th>
-                        <th class="hide-on-mobile">實付費用(萬)</th>
-                        <th>抵扣費用(萬)</th>
-                        <th>課稅所得(萬)</th>
-                        <th>房地合一稅(萬)</th>
-                        <th>淨獲利(萬)</th>
-                    </tr>
-                </thead>
-                <tbody id="resultBody">
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>成交價(萬)</th>
+                            <th>
+                                實付費用(萬)
+                                <span class="col-formula">(仲介費+規費)</span>
+                            </th>
+                            <th>
+                                抵扣費用(萬)
+                                <span class="col-formula">(擇優:仲介費或政府免稅額申報最高30萬)</span>
+                            </th>
+                            <th>
+                                課稅所得(萬)
+                                <span class="col-formula">(賣價-總成本-抵扣)</span>
+                            </th>
+                            <th>
+                                房地合一稅(萬)
+                                <span class="col-formula">(所得 × 稅率 = 稅金)</span>
+                            </th>
+                            <th>
+                                淨獲利(萬)
+                                <span class="col-formula">(賣價-總成本-實付-稅)</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultBody">
+                    </tbody>
+                </table>
+            </div>
             
             <div class="footer-info">
                 <div>
-                    <strong>承峰不動產仲介有限公司 (永義房屋)</strong><br>
+                    <strong>承峰不動產仲介有限公司 (永義房屋斗六成功加盟店)</strong><br>
                     雲林縣斗六市成功二街126號
                 </div>
-                <div style="text-align: right;">
-                    *本表數據僅供參考，實際稅額依國稅局核定為準<br>
+                <div style="text-align: right; max-width: 60%; ">
+                    *免責聲明：本表數據僅供參考，並且請手動核算過，如因系統顯示/計算異常，實際稅額依國稅局核定為準，不負擔任何責任。<br>
                     *製表時間：<span id="dateDisplay"></span>
                 </div>
             </div>
@@ -367,7 +450,6 @@
 
 <script>
     function generateTable() {
-        // 取得所有 Input 元素
         const inputs = {
             costPrice: document.getElementById('costPrice'),
             buyAgencyFee: document.getElementById('buyAgencyFee'),
@@ -375,6 +457,7 @@
             renovationCost: document.getElementById('renovationCost'),
             landIncrement: document.getElementById('landIncrement'),
             taxRate: document.getElementById('taxRate'),
+            agencyFeeType: document.getElementById('agencyFeeType'),
             agencyRate: document.getElementById('agencyRate'),
             otherSellingFees: document.getElementById('otherSellingFees'),
             basePrice: document.getElementById('basePrice'),
@@ -382,7 +465,6 @@
             rowCount: document.getElementById('rowCount')
         };
 
-        // --- 核心修正：同步 HTML Attribute，確保列印/複製時抓到最新值 ---
         Object.values(inputs).forEach(el => {
             if(el.tagName === 'INPUT') {
                 el.setAttribute('value', el.value);
@@ -395,7 +477,6 @@
             }
         });
 
-        // 更新摘要文字
         document.getElementById('s_cost').innerText = inputs.costPrice.value;
         document.getElementById('s_buyAgency').innerText = inputs.buyAgencyFee.value;
         document.getElementById('s_buyOther').innerText = inputs.buyOtherFees.value;
@@ -403,10 +484,10 @@
         document.getElementById('s_land').innerText = inputs.landIncrement.value;
         document.getElementById('s_tax').innerText = inputs.taxRate.value;
         document.getElementById('s_sellAgency').innerText = inputs.agencyRate.value;
+        document.getElementById('s_sellAgencyType').innerText = inputs.agencyFeeType.value === 'percent' ? '%' : '萬';
         document.getElementById('s_sellOther').innerText = inputs.otherSellingFees.value;
         document.getElementById('textSummary').style.display = 'block';
 
-        // 取值並計算
         const costPrice = parseFloat(inputs.costPrice.value) || 0;
         const buyAgencyFee = parseFloat(inputs.buyAgencyFee.value) || 0;
         const buyOtherFees = parseFloat(inputs.buyOtherFees.value) || 0;
@@ -418,7 +499,8 @@
         const taxRate = parseFloat(taxRateSelect) / 100 || 0;
         const isSelfUse = (taxRateSelect === '10'); 
 
-        const agencyRate = parseFloat(inputs.agencyRate.value) / 100 || 0;
+        const agencyFeeType = inputs.agencyFeeType.value;
+        const agencyRateValue = parseFloat(inputs.agencyRate.value) || 0;
         const otherSellingFees = parseFloat(inputs.otherSellingFees.value) || 0;
         
         const basePrice = parseFloat(inputs.basePrice.value) || 0;
@@ -435,13 +517,26 @@
 
         const totalCost = costPrice + totalAcquisitionCosts;
 
-        // 核心修正：從 0 開始往下跑到負數
         for(let i = 0; i >= -rowCount; i--) {
             let currentPrice = basePrice + (i * stepValue);
             
-            let actualSellingExpense = (currentPrice * agencyRate) + otherSellingFees; 
+            let actualSellingExpense = 0;
+            if(agencyFeeType === 'percent') {
+                actualSellingExpense = (currentPrice * (agencyRateValue / 100)) + otherSellingFees;
+            } else {
+                actualSellingExpense = agencyRateValue + otherSellingFees;
+            }
+             
             let statutoryExpense = Math.min(currentPrice * 0.03, 30); 
             let deductibleExpense = Math.max(actualSellingExpense, statutoryExpense); 
+            
+            // 修改：動態判斷顯示為仲介費折抵或免稅額申報
+            let deducMethod = "";
+            if (actualSellingExpense >= statutoryExpense) {
+                deducMethod = "(本次採用仲介費折抵)";
+            } else {
+                deducMethod = "(本次採用政府免稅額30萬)";
+            }
 
             let taxBase = currentPrice - totalCost - deductibleExpense - landIncrement;
             
@@ -466,8 +561,11 @@
 
             tr.innerHTML = `
                 <td style="font-weight: bold; color: var(--table-blue);">${currentPrice}</td>
-                <td class="hide-on-mobile" style="color: var(--brand-gray);">${formatNum(actualSellingExpense)}</td>
-                <td style="color: #888;">${formatNum(deductibleExpense)}</td>
+                <td style="color: var(--brand-gray);">${formatNum(actualSellingExpense)}</td>
+                <td style="color: #888;">
+                    ${formatNum(deductibleExpense)}
+                    <span class="dynamic-method">${deducMethod}</span>
+                </td>
                 <td style="color: var(--brand-gray);">${formatNum(taxBase)}</td>
                 <td style="color: var(--brand-gray);">${formatNum(taxAmount)}</td>
                 <td style="font-weight: bold; color: ${getColor(netProfit)};">${formatNum(netProfit)}</td>
@@ -477,25 +575,38 @@
     }
 
     function saveAsImage() {
+        document.querySelectorAll('input').forEach(input => input.blur());
+        generateTable();
+
         const captureElement = document.getElementById('full-report-area');
         window.scrollTo(0, 0);
 
-        html2canvas(captureElement, {
-            scale: 2, 
-            backgroundColor: "#ffffff", 
-            useCORS: true, 
-            logging: false, 
-            width: captureElement.scrollWidth,  
-            height: captureElement.scrollHeight 
-        }).then(canvas => {
-            let link = document.createElement('a');
-            link.download = `成屋獲利報告_${new Date().getTime()}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }).catch(err => {
-            console.error('圖片儲存失敗:', err);
-            alert('截圖失敗，建議改用其他瀏覽器或使用手機原生截圖功能！');
-        });
+        setTimeout(() => {
+            html2canvas(captureElement, {
+                scale: 2, 
+                backgroundColor: "#ffffff", 
+                useCORS: true, 
+                logging: false, 
+                width: captureElement.scrollWidth,  
+                height: captureElement.scrollHeight,
+                windowWidth: captureElement.scrollWidth,
+                windowHeight: captureElement.scrollHeight,
+                y: 0,
+                x: 0
+            }).then(canvas => {
+                let link = document.createElement('a');
+                link.download = `成屋獲利報告_${new Date().getTime()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+            }).catch(err => {
+                console.error('圖片儲存失敗:', err);
+                alert('截圖失敗！\n\n若您是「直接點擊 HTML 檔案」開啟網頁，可能會被瀏覽器的安全機制擋下。\n建議：改用 Chrome 瀏覽器，或是使用電腦內建的截圖工具！');
+            });
+        }, 100); 
     }
 
     window.onload = generateTable;
