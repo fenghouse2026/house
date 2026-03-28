@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1050">
+    <meta name="viewport" content="width=1100">
     <title>成屋獲利對照報告 - 永義房屋斗六成功莊敬加盟店</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -16,12 +16,12 @@
             --border-color: #cbd5e1;
         }
 
-        /* 移除所有手機特化設定，強制維持大版面 */
+        /* 移除所有自適應，強制為固定大寬度 */
         body {
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             background: #f8fafc; color: var(--text-main);
             padding: 40px 20px; margin: 0; min-height: 100vh;
-            min-width: 1050px; 
+            width: 1100px; box-sizing: border-box;
         }
 
         .app-container { width: 1000px; margin: auto; }
@@ -57,6 +57,7 @@
         }
         .section-title::after { content: ""; flex: 1; height: 1px; background: #f1f5f9; margin-left: 10px; }
 
+        /* 絕對對齊的一排設定區 */
         .input-grid { display: flex; gap: 25px; align-items: flex-end; margin-bottom: 15px; }
         .input-group { flex: 1; }
         .input-group label { 
@@ -71,7 +72,7 @@
         }
         input:focus, select:focus { border-color: var(--yung-green); }
 
-        /* 摘要區 (匯出用) */
+        /* 匯出用的摘要區 */
         #textSummary {
             background: #fafafa; border-radius: 12px; padding: 30px;
             font-size: 18px; line-height: 2; margin-bottom: 35px; 
@@ -85,7 +86,7 @@
             padding: 10px 35px; border-radius: 50px; font-weight: 800;
         }
 
-        /* 橫式大表設計 */
+        /* 大橫表設計 */
         table { width: 100%; border-collapse: separate; border-spacing: 0 12px; table-layout: fixed; }
         th { 
             color: var(--text-main); font-size: 16px; font-weight: 800; padding: 15px 5px 20px 5px; 
@@ -108,7 +109,8 @@
         .method-tag { color: var(--yung-green); font-size: 12px; font-weight: 800; display: block; margin-top: 5px; }
         .tax-tag { color: #94a3b8; font-size: 12px; font-weight: 600; display: block; margin-top: 5px; }
 
-        /* 匯出設定保持穩定 */
+        /* 匯出樣式 */
+        .export-mode { width: 1000px !important; padding: 60px 80px !important; border-radius: 0 !important; }
         .export-mode .control-panel { display: none !important; }
         .export-mode #textSummary { display: block !important; visibility: visible !important; opacity: 1 !important; }
 
@@ -117,6 +119,8 @@
             display: flex; justify-content: space-between; align-items: flex-end;
             font-size: 14px; color: var(--text-sub); white-space: nowrap;
         }
+        
+        /* ❌ 已經將所有 @media (max-width: 600px) 徹底刪除！手機將完全依照上方設定顯示 ❌ */
     </style>
 </head>
 <body>
@@ -172,7 +176,7 @@
 
             <div class="input-section" style="margin-bottom:0;">
                 <div class="section-title">3. 成交金額對照設定</div>
-                <div class="input-grid">
+                <div class="input-grid" style="max-width: 700px;">
                     <div class="input-group"><label>基準價</label><input type="number" id="basePrice" value="1500"></div>
                     <div class="input-group">
                         <label>金額級距</label>
@@ -240,7 +244,6 @@
         const stepValue = parseFloat(document.getElementById('stepValue').value) || 0;
         const rowCount = parseInt(document.getElementById('rowCount').value) || 6;
 
-        // 確保儲存時摘要數據同步正確
         const summaryArea = document.getElementById('textSummary');
         summaryArea.innerHTML = `
             <div style="font-size: 22px; color: var(--yung-green); font-weight: 950; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px;">報告設定條件：</div>
