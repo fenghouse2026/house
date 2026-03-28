@@ -50,7 +50,7 @@
             background: linear-gradient(to bottom, var(--yung-yellow), var(--yung-green));
         }
 
-        .watermark-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; pointer-events: none; }
+        .watermark-overlay { position: absolute; top: 0; left: 0; right: right: 0; bottom: 0; z-index: 10; pointer-events: none; }
         .wm-logo { position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); width: 520px; opacity: 0.035; }
 
         .report-branding { display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; text-align: center; }
@@ -93,10 +93,16 @@
             outline: none;
         }
 
+        /* 🔥 修正：確保輸出時一定會顯示的摘要樣式 🔥 */
         #textSummary {
-            background: #fafafa; border-radius: 10px; padding: 25px;
-            font-size: 15px; line-height: 1.8; margin-bottom: 35px;
-            display: none; border: 1px solid #f0f0f0;
+            background: #fafafa; 
+            border-radius: 10px; 
+            padding: 25px;
+            font-size: 15px; 
+            line-height: 1.8; 
+            margin-bottom: 35px;
+            display: none; /* 平常操作隱藏 */
+            border: 1px solid #f0f0f0;
         }
 
         table { width: 100%; border-collapse: separate; border-spacing: 0 6px; margin-top: 15px; }
@@ -114,9 +120,10 @@
         
         .highlight-row td { background: #fffbeb !important; border-color: #fef3c7 !important; }
 
+        /* A4 模式 CSS 優先權優化 */
         .export-mode { width: 850px !important; padding: 70px 80px !important; border-radius: 0 !important; }
-        .export-mode .control-panel { display: none !important; }
-        .export-mode #textSummary { display: block !important; }
+        .export-mode .input-section { display: none !important; }
+        .export-mode #textSummary { display: block !important; visibility: visible !important; }
         .export-mode .wm-logo { top: 60%; width: 550px; }
 
         .footer-info {
@@ -190,7 +197,7 @@
                     <div class="input-group">
                         <label>賣方仲介服務費</label>
                         <div style="display: flex; gap: 10px;">
-                            <select id="agencyFeeType" style="flex: 0 0 30%;">
+                            <select id="agencyFeeType" style="flex: 0 0 30%; border-bottom: 1px solid var(--border-color);">
                                 <option value="percent">%</option>
                                 <option value="fixed">萬</option>
                             </select>
@@ -253,6 +260,21 @@
 </div>
 
 <script>
+    // 🔥 全域同步函數：確保數據隨時抓取最新值 🔥
+    function syncDataToSummary() {
+        document.getElementById('s_cost').innerText = document.getElementById('costPrice').value || 0;
+        document.getElementById('s_reno').innerText = document.getElementById('renovationCost').value || 0;
+        document.getElementById('s_buyAgency').innerText = document.getElementById('buyAgencyFee').value || 0;
+        document.getElementById('s_buyOther').innerText = document.getElementById('buyOtherFees').value || 0;
+        
+        const taxSelect = document.getElementById('taxRate');
+        document.getElementById('s_tax').innerText = taxSelect.options[taxSelect.selectedIndex].text;
+        
+        document.getElementById('s_sellAgency').innerText = document.getElementById('agencyRate').value || 0;
+        document.getElementById('s_sellAgencyType').innerText = (document.getElementById('agencyFeeType').value === 'percent' ? '%' : '萬');
+        document.getElementById('s_sellOther').innerText = document.getElementById('otherSellingFees').value || 0;
+    }
+
     function generateTable() {
         const costPrice = parseFloat(document.getElementById('costPrice').value) || 0;
         const reno = parseFloat(document.getElementById('renovationCost').value) || 0;
@@ -260,7 +282,6 @@
         const buyOther = parseFloat(document.getElementById('buyOtherFees').value) || 0;
         const taxSelect = document.getElementById('taxRate');
         const taxRate = parseFloat(taxSelect.value) / 100 || 0;
-        const taxText = taxSelect.options[taxSelect.selectedIndex].text;
         const isSelfUse = (taxSelect.value === '10');
         const agencyFeeType = document.getElementById('agencyFeeType').value;
         const agencyRate = parseFloat(document.getElementById('agencyRate').value) || 0;
@@ -269,13 +290,8 @@
         const stepValue = parseFloat(document.getElementById('stepValue').value) || 0;
         const rowCount = parseInt(document.getElementById('rowCount').value) || 8;
 
-        document.getElementById('s_cost').innerText = costPrice;
-        document.getElementById('s_reno').innerText = reno;
-        document.getElementById('s_buyAgency').innerText = buyAgency;
-        document.getElementById('s_buyOther').innerText = buyOther;
-        document.getElementById('s_tax').innerText = taxText;
-        document.getElementById('s_sellAgency').innerText = agencyRate;
-        document.getElementById('s_sellAgencyType').innerText = (agencyFeeType === 'percent' ? '%' : '萬');
+        // 執行同步
+        syncDataToSummary();
 
         const today = new Date();
         document.getElementById('dateDisplay').innerText = `${today.getFullYear()}/${today.getMonth()+1}/${today.getDate()}`;
@@ -310,7 +326,10 @@
 
     function saveAsImage() {
         document.querySelectorAll('input').forEach(i => i.blur());
+        
+        // 📸 關鍵動作：截圖前再次強制生成與同步 📸
         generateTable();
+        
         const area = document.getElementById('full-report-area');
         area.classList.add('export-mode');
 
@@ -327,8 +346,9 @@
                 link.href = canvas.toDataURL('image/png');
                 document.body.appendChild(link);
                 link.click();
+                document.body.removeChild(link);
                 area.classList.remove('export-mode');
-            });
+            }).catch(() => area.classList.remove('export-mode'));
         }, 500); 
     }
     window.onload = generateTable;
