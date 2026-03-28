@@ -3,109 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STARLUX Style 房產獲利試算 - 永義房屋</title>
+    <title>TESLA Style 獲利試算 - 永義房屋</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            /* 星宇航空經典配色 */
-            --starlux-gold: #c8a876;   /* 大地金 */
-            --starlux-rose: #e1b2a4;   /* 玫瑰金 */
-            --starlux-dark: #1e242b;   /* 曜石黑/深灰 */
-            --starlux-bg: #12161b;     /* 背景曜黑 */
-            --starlux-panel: rgba(45, 55, 65, 0.7);
-            --starlux-border: rgba(200, 168, 118, 0.3);
-            --text-gold: #d4af37;
+            --tesla-black: #171a20;
+            --tesla-gray: #393c41;
+            --tesla-light-gray: #f4f4f4;
+            --tesla-red: #e82127; /* Tesla 經典紅用於淨獲利 */
+            --tesla-accent: #3d69e1;
         }
 
         body {
-            font-family: 'Optima', 'PingFang TC', 'Noto Sans TC', sans-serif;
-            background: var(--starlux-bg); 
-            color: #ffffff; padding: 0; margin: 0;
-            display: flex; flex-direction: column; align-items: center;
-            letter-spacing: 0.05em;
+            font-family: 'Gotham SSm', 'PingFang TC', 'Noto Sans TC', sans-serif;
+            background: #ffffff; color: var(--tesla-black);
+            padding: 0; margin: 0; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* 控制按鈕區 */
+        /* --- 頂部 Tesla 功能按鈕 --- */
         .ui-controls { width: 100%; max-width: 800px; padding: 25px; box-sizing: border-box; }
-        .btn-group { display: flex; gap: 15px; margin-bottom: 25px; }
+        .btn-group { display: flex; gap: 10px; margin-bottom: 25px; }
         .btn-group button { 
-            border: 1px solid var(--starlux-gold); 
-            padding: 16px; border-radius: 4px; cursor: pointer; color: var(--starlux-gold);
-            font-weight: 600; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
-            background: var(--starlux-dark); transition: all 0.4s ease;
-            text-transform: uppercase; font-size: 14px;
+            border: none; padding: 14px; border-radius: 4px; cursor: pointer;
+            font-weight: 600; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+            transition: all 0.2s ease-in-out; font-size: 14px;
+            background: var(--tesla-light-gray); color: var(--tesla-gray);
         }
-        .btn-group button:hover { background: var(--starlux-gold); color: var(--starlux-bg); box-shadow: 0 0 15px rgba(200, 168, 118, 0.4); }
-        .btn-group button:active { transform: scale(0.98); }
+        .btn-group button:hover { background: var(--tesla-gray); color: white; }
+        .btn-calc { background: var(--tesla-black) !important; color: white !important; }
 
-        /* 輸出容器：A4 比例與星宇質感 */
+        /* --- A4 輸出主容器 --- */
         #output-container {
             width: 800px; 
             min-height: 1131px; 
-            background: var(--starlux-bg);
+            background: #ffffff;
             padding: 60px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             position: relative;
-            border: 1px solid var(--starlux-border);
         }
 
-        /* 標題與 LOGO */
         .report-header { 
-            display: flex; justify-content: space-between; align-items: flex-end; 
-            margin-bottom: 40px; border-bottom: 1px solid var(--starlux-gold); padding-bottom: 20px;
-        }
-        .brand-logo-img { height: 60px; filter: brightness(0) invert(1); } /* 讓 Logo 變白色以契合深色背景 */
-        .report-title { color: var(--starlux-gold); font-size: 28px; font-weight: 300; margin: 0; text-transform: uppercase; }
-
-        /* 💎 星宇風格：報告設定條件 (紮實感) */
-        .summary-panel {
-            background: var(--starlux-panel);
-            border: 1px solid var(--starlux-border);
-            padding: 30px;
+            display: flex; justify-content: space-between; align-items: center; 
             margin-bottom: 40px;
-            border-radius: 2px;
         }
-        .summary-title { font-size: 22px; color: var(--starlux-rose); font-weight: 600; margin-bottom: 15px; display: block; border-left: 3px solid var(--starlux-gold); padding-left: 15px; }
-        .summary-line { font-size: 18px; color: #d1d5db; font-weight: 300; line-height: 2.2; }
-        .summary-line b { color: var(--starlux-gold); font-size: 22px; margin: 0 6px; }
+        .brand-logo-img { height: 50px; opacity: 0.9; }
+        .report-title { color: var(--tesla-black); font-size: 28px; font-weight: 500; margin: 0; letter-spacing: 2px; }
 
-        /* 報表區 */
+        /* 💡 Tesla 簡約摘要區 */
+        .summary-panel {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 30px 0;
+            margin-bottom: 40px;
+        }
+        .summary-title { font-size: 14px; color: #5c5e62; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; display: block; letter-spacing: 1px; }
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .summary-line { font-size: 18px; color: #171a20; font-weight: 400; }
+        .summary-line b { font-size: 22px; font-weight: 700; margin: 0 4px; border-bottom: 2px solid var(--tesla-black); }
+
+        /* 報表內容區 */
         .report-content { flex-grow: 1; position: relative; }
         .watermark { 
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 75%; opacity: 0.05; pointer-events: none; z-index: 0; filter: grayscale(1) invert(1);
+            width: 80%; opacity: 0.05; pointer-events: none; z-index: 0;
         }
 
-        /* 表格設計：登機證般的數據感 */
-        table { width: 100%; border-collapse: separate; border-spacing: 0 12px; position: relative; z-index: 1; }
-        th { font-size: 14px; color: var(--starlux-gold); font-weight: 400; padding: 15px 5px; text-align: center; text-transform: uppercase; border-bottom: 1px solid var(--starlux-border); }
-        td { padding: 25px 5px; text-align: center; background: rgba(255,255,255,0.03); vertical-align: middle; border-top: 1px solid var(--starlux-border); border-bottom: 1px solid var(--starlux-border); }
-        td:first-child { border-left: 1px solid var(--starlux-border); border-radius: 4px 0 0 4px; }
-        td:last-child { border-right: 1px solid var(--starlux-border); border-radius: 0 4px 4px 0; }
+        /* 表格設計：極簡無框感 */
+        table { width: 100%; border-collapse: collapse; position: relative; z-index: 1; table-layout: fixed; }
+        th { font-size: 13px; color: #5c5e62; font-weight: 700; padding: 15px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid #eee; }
+        td { padding: 35px 0; text-align: center; border-bottom: 1px solid #f4f4f4; vertical-align: middle; }
         
-        .col-price { font-size: 30px; color: #ffffff; font-weight: 200; }
-        .col-net { font-size: 32px; color: var(--starlux-rose); font-weight: 600; }
-        .col-common { font-size: 18px; color: #cbd5e1; }
-        .tag-small { display: block; font-size: 11px; color: var(--starlux-gold); margin-top: 5px; opacity: 0.8; }
+        .col-price { font-size: 32px; color: var(--tesla-black); font-weight: 300; }
+        .col-net { font-size: 36px; color: var(--tesla-red); font-weight: 700; }
+        .col-common { font-size: 18px; color: #393c41; }
+        .tag-small { display: block; font-size: 10px; color: #5c5e62; margin-top: 6px; letter-spacing: 0.5px; font-weight: 700; }
 
         /* 頁腳 */
         .footer { 
-            margin-top: 50px; border-top: 1px solid var(--starlux-border); padding-top: 25px;
+            margin-top: 60px; padding-top: 20px;
             display: flex; justify-content: space-between; align-items: flex-end;
-            color: #9ca3af; font-size: 13px;
+            color: #5c5e62; font-size: 12px;
         }
-        .footer-left strong { font-size: 18px; color: var(--starlux-gold); display: block; margin-bottom: 5px; font-weight: 400; }
+        .footer strong { font-size: 18px; color: var(--tesla-black); display: block; margin-bottom: 4px; font-weight: 600; }
 
-        /* 輸入控制面板 */
-        .control-panel { background: var(--starlux-dark); padding: 25px; border-radius: 8px; border: 1px solid var(--starlux-border); display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .input-group label { display: block; font-weight: 400; margin-bottom: 8px; color: var(--starlux-gold); font-size: 13px; text-transform: uppercase; }
+        /* 控制面板 UI */
+        .control-panel { background: #f9f9f9; padding: 25px; border-radius: 8px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #393c41; font-size: 13px; }
         input, select { 
-            width: 100%; padding: 12px; border-radius: 4px; border: 1px solid var(--starlux-border); 
-            font-size: 16px; box-sizing: border-box; background: transparent; color: white; font-weight: bold;
+            width: 100%; padding: 12px; border-radius: 4px; border: 1px solid #d0d1d2; 
+            font-size: 16px; box-sizing: border-box; background: white; color: var(--tesla-black);
         }
-        input:focus { border-color: var(--starlux-gold); outline: none; }
+        input:focus { border-color: var(--tesla-black); outline: none; }
 
         @media (max-width: 800px) {
             #output-container { transform: scale(0.42); transform-origin: top center; margin-bottom: -650px; }
@@ -116,27 +106,27 @@
 
 <div class="ui-controls">
     <div class="btn-group">
-        <button class="btn-calc" onclick="generateTable()"><span>📊</span>RECALCULATE / 重新試算</button>
-        <button class="btn-share" onclick="handleMobileShare()"><span>📲</span>MOBILE SHARE / 分享</button>
-        <button class="btn-pc" onclick="handlePCDownload()"><span>💻</span>DOWNLOAD / 下載照片</button>
+        <button class="btn-calc" onclick="generateTable()">RECALCULATE / 重新試算</button>
+        <button class="btn-share" onclick="handleMobileShare()">SHARE / 分享</button>
+        <button class="btn-pc" onclick="handlePCDownload()">DOWNLOAD / 下載</button>
     </div>
 
     <div class="control-panel">
-        <div class="input-group"><label>Acquisition Cost / 買入總價</label><input type="number" id="costPrice" value="1200" oninput="generateTable()"></div>
-        <div class="input-group"><label>Renovation / 列舉裝潢</label><input type="number" id="renoCost" value="0" oninput="generateTable()"></div>
-        <div class="input-group"><label>Broker Fee / 買仲費</label><input type="number" id="buyAg" value="0" oninput="generateTable()"></div>
-        <div class="input-group"><label>Other Fees / 買入規費</label><input type="number" id="buyFe" value="0" oninput="generateTable()"></div>
-        <div class="input-group"><label>Base Price / 基準成交價</label><input type="number" id="basePrice" value="1800" oninput="generateTable()"></div>
+        <div class="input-group"><label>Purchase Price</label><input type="number" id="costPrice" value="1200" oninput="generateTable()"></div>
+        <div class="input-group"><label>Renovation</label><input type="number" id="renoCost" value="0" oninput="generateTable()"></div>
+        <div class="input-group"><label>Agency Fee (Buy)</label><input type="number" id="buyAg" value="0" oninput="generateTable()"></div>
+        <div class="input-group"><label>Closing Costs</label><input type="number" id="buyFe" value="0" oninput="generateTable()"></div>
+        <div class="input-group"><label>Base Listing Price</label><input type="number" id="basePrice" value="1800" oninput="generateTable()"></div>
         <div class="input-group">
-            <label>Step & Count / 級距與筆數</label>
+            <label>Interval & Rows</label>
             <div style="display:flex; gap:5px;">
                 <select id="stepValue" onchange="generateTable()"><option value="5">5萬</option><option value="10" selected>10萬</option></select>
-                <input type="number" id="rowCount" value="6" oninput="generateTable()">
+                <input type="number" id="rowCount" value="5" oninput="generateTable()">
             </div>
         </div>
-        <div class="input-group"><label>Agency Fee / 賣方服務費 (%)</label><input type="number" id="agencyVal" value="4" oninput="generateTable()"></div>
+        <div class="input-group"><label>Agency Fee (Sell %)</label><input type="number" id="agencyVal" value="4" oninput="generateTable()"></div>
         <div class="input-group">
-            <label>Tax Rate / 房地合一稅率</label>
+            <label>Capital Gains Tax</label>
             <select id="taxRate" onchange="generateTable()">
                 <option value="45">45% (持有2年內)</option><option value="35" selected>35% (持有2-5年)</option><option value="10">10% (自住滿6年)</option>
             </select>
@@ -146,14 +136,16 @@
 
 <div id="output-container">
     <div class="report-header">
-        <img src="logo.png" class="brand-logo-img" alt="LOGO">
-        <h1 class="report-title">Profitability Report</h1>
+        <img src="logo.png" class="brand-logo-img" alt="永義房屋">
+        <h1 class="report-title">Efficiency Report</h1>
     </div>
 
     <div class="summary-panel">
-        <span class="summary-title">REPORT SPECIFICATIONS / 報告設定條件</span>
-        <div class="summary-line" id="sumLine1">取得：買入 <b>1200</b> | 裝潢 <b>0</b> | 買仲費 <b>0</b> | 買入規費 <b>0</b></div>
-        <div class="summary-line" id="sumLine2">稅務：稅率 <b>35% (持有2-5年)</b> | 賣仲費 <b>4%</b> | 賣出規費 <b>0</b></div>
+        <span class="summary-title">Configuration / 試算設定</span>
+        <div class="summary-grid">
+            <div class="summary-line">取得成本：買入 <b>886</b> | 裝潢 <b>0</b></div>
+            <div class="summary-line">稅務設定：稅率 <b>35%</b> | 賣仲 <b>4%</b></div>
+        </div>
     </div>
 
     <div class="report-content">
@@ -161,11 +153,11 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width:20%">Est. Price / 成交價格</th>
-                    <th style="width:18%">Fees / 實付費用</th>
-                    <th style="width:22%">Deduction / 抵扣費用</th>
-                    <th style="width:20%">Tax / 房地稅額</th>
-                    <th style="width:20%">Net Profit / 預估淨獲利</th>
+                    <th>Price / 成交價格</th>
+                    <th>Fees / 實付費用</th>
+                    <th>Deduction / 抵扣</th>
+                    <th>Tax / 稅額</th>
+                    <th>Profit / 淨獲利</th>
                 </tr>
             </thead>
             <tbody id="resultBody"></tbody>
@@ -175,11 +167,11 @@
     <div class="footer">
         <div class="footer-left">
             <strong>永義房屋斗六成功莊敬加盟店</strong>
-            承峰不動產仲介有限公司 | 斗六市成功二街126號
+            斗六市成功二街126號
         </div>
         <div style="text-align:right;">
-            DATE：<span id="dateDisplay"></span><br>
-            DISCLAIMER：實際稅額以國稅局核定為準。
+            TSLA-PRP v2.0 | <span id="dateDisplay"></span><br>
+            免責聲明：實際稅額以國稅局核定為準。
         </div>
     </div>
 </div>
@@ -194,14 +186,10 @@
         const agencyVal = parseFloat(document.getElementById('agencyVal').value) || 0;
         const taxRateSelect = document.getElementById('taxRate');
         const taxVal = taxRateSelect.value;
-        const taxText = taxRateSelect.options[taxRateSelect.selectedIndex].text;
         const step = parseFloat(document.getElementById('stepValue').value) || 10;
-        const rows = parseInt(document.getElementById('rowCount').value) || 6;
+        const rows = parseInt(document.getElementById('rowCount').value) || 5;
 
         document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString();
-
-        document.getElementById('sumLine1').innerHTML = `取得成本：買入 <b>${cost}</b> | 裝潢 <b>${reno}</b> | 買仲 <b>${buyAg}</b> | 規費 <b>${buyFe}</b>`;
-        document.getElementById('sumLine2').innerHTML = `稅務設定：稅率 <b>${taxText}</b> | 賣仲 <b>${agencyVal}%</b>`;
 
         const tbody = document.getElementById('resultBody');
         tbody.innerHTML = '';
@@ -219,7 +207,7 @@
             tr.innerHTML = `
                 <td class="col-price">${price}</td>
                 <td class="col-common">${sellAgency.toFixed(1)}</td>
-                <td class="col-common">${deduc.toFixed(1)}<span class="tag-small">${sellAgency >= Math.min(price * 0.03, 30) ? 'Optimum: Agency' : 'Optimum: Exemption'}</span></td>
+                <td class="col-common">${deduc.toFixed(1)}<span class="tag-small">AUTO-OPTIMIZED</span></td>
                 <td class="col-common">${tax.toFixed(1)}</td>
                 <td class="col-net">${net.toFixed(1)}</td>
             `;
@@ -231,12 +219,12 @@
         const target = document.getElementById('output-container');
         const canvas = await html2canvas(target, { 
             scale: 3, useCORS: true, 
-            backgroundColor: "#12161b",
+            backgroundColor: "#ffffff",
             height: target.scrollHeight,
             windowHeight: target.scrollHeight 
         });
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], 'STARLUX_Report.png', { type: 'image/png' });
+            const file = new File([blob], 'TESLA_RealEstate_Report.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({ files: [file], title: '獲利試算報告' });
             }
@@ -247,13 +235,13 @@
         const target = document.getElementById('output-container');
         const canvas = await html2canvas(target, { 
             scale: 3, useCORS: true, 
-            backgroundColor: "#12161b",
+            backgroundColor: "#ffffff",
             height: target.scrollHeight,
             windowHeight: target.scrollHeight 
         });
         const a = document.createElement('a');
         a.href = canvas.toDataURL("image/png");
-        a.download = `STARLUX_Profit_Report_${new Date().getTime()}.png`;
+        a.download = `TESLA_Report_${new Date().getTime()}.png`;
         a.click();
     }
 
